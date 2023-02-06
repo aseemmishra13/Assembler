@@ -5,6 +5,10 @@
 package com.mycompany.assembler;
 
 import java.awt.Color;
+import java.io.File;  // Import the File class
+import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.util.Scanner;
+import java.util.HashMap;
 
 /**
  *
@@ -20,6 +24,16 @@ public class Simulator extends javax.swing.JFrame {
          
         
     }
+   HashMap<String, String> prog = new HashMap<String, String>();
+   HashMap<String, String> instruct = new HashMap<String, String>();
+ 
+    int programcounter=0;
+    String r="";
+    String x="";
+    String ix="";
+    String i="";
+    String address="0000";
+    
     String x15= "0";
     String x14= "0";
     String x13= "0";
@@ -36,6 +50,28 @@ public class Simulator extends javax.swing.JFrame {
     String x2= "0";
     String x1= "0";
     String x0= "0";
+    String gpr0="0";
+    String gpr1="0";
+    String gpr2="0";
+    String gpr3="0";
+    String ixr1="0";
+    String ixr2="0";
+    String ixr3="0";
+      String hex;
+      
+      public static final HashMap<String, String> OPCODE = new HashMap<String, String>();
+	static {
+		OPCODE.put("000000", "HLT");
+		OPCODE.put("011110", "TRAP");
+		OPCODE.put("000001", "LDR");
+		OPCODE.put("000010", "STR");
+		OPCODE.put("000011", "LDA");
+		OPCODE.put("101001", "LDX");
+		OPCODE.put("101010", "STX");
+		
+                System.out.println(OPCODE);
+	}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -690,16 +726,41 @@ public class Simulator extends javax.swing.JFrame {
         );
 
         jButton11.setText("Store");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
 
         jButton12.setText("St+");
 
         jButton13.setText("Load");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
 
         jButton14.setText("Init");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
 
         jButton15.setText("SS");
+        jButton15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton15ActionPerformed(evt);
+            }
+        });
 
         jButton16.setText("Run");
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
 
         jLabel19.setText("Halt");
 
@@ -1016,79 +1077,489 @@ public class Simulator extends javax.swing.JFrame {
            jToggleButton1.setForeground(Color.BLACK);
        }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
+    public void sTringToHexa(){
+        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
+        int binary= Integer.parseInt(finals,2);
+         hex = Integer.toString(binary,16).toUpperCase();
+        if (hex.length() < 4)
+    hex = "000".substring(hex.length() - 1) + hex;
+        
+    }
+    String EffectiveAddress (String address){
     
+    sTringToHexa();
+         String add= address;
+       
+             String bin =hexToBinary(hex);
+             
+              address = bin.substring(6, 8);
+              i = bin.substring(10, 11);
+               ix = bin.substring(8, 10);
+               if ("0".equals(i)){
+                   if ("00".equals(ix)){
+                       return add;
+                   }
+                   else if ("01".equals(ix)){
+                       return add+IXR1.getText();
+                   }
+                   else if ("10".equals(ix)){
+                       return add+IXR2.getText();
+                   }
+                   else if ("11".equals(ix)){
+                       return add+IXR3.getText();
+                   }
+               }
+               else {
+                    if ("00".equals(ix)){
+                        return prog.get(add);
+                        
+                    }
+                   else if ("01".equals(ix)){
+                       return prog.get(add)+prog.get(ix);
+                   }
+                   else if ("10".equals(ix)){
+                       return prog.get(add)+prog.get(ix);
+                   }
+                   else if ("11".equals(ix)){
+                       return prog.get(add)+prog.get(ix);
+                   }
+               
+               }
+              
+              return address;
+    }
+   String Hexa(String hexas){
+       
+        int binary= Integer.parseInt(hexas,2);
+         hex = Integer.toString(binary,16).toUpperCase();
+        if (hex.length() < 4)
+    hex = "000".substring(hex.length() - 1) + hex;
+        return hex;
+        
+    }
+     String hexToBinary(String hex)
+    {
+ 
+        // variable to store the converted
+        // Binary Sequence
+        String binary = "";
+ 
+        // converting the accepted Hexadecimal
+        // string to upper case
+        hex = hex.toUpperCase();
+ 
+        // initializing the HashMap class
+        HashMap<Character, String> hashMap
+            = new HashMap<Character, String>();
+ 
+        // storing the key value pairs
+        hashMap.put('0', "0000");
+        hashMap.put('1', "0001");
+        hashMap.put('2', "0010");
+        hashMap.put('3', "0011");
+        hashMap.put('4', "0100");
+        hashMap.put('5', "0101");
+        hashMap.put('6', "0110");
+        hashMap.put('7', "0111");
+        hashMap.put('8', "1000");
+        hashMap.put('9', "1001");
+        hashMap.put('A', "1010");
+        hashMap.put('B', "1011");
+        hashMap.put('C', "1100");
+        hashMap.put('D', "1101");
+        hashMap.put('E', "1110");
+        hashMap.put('F', "1111");
+ 
+        int i;
+        char ch;
+ 
+        // loop to iterate through the length
+        // of the Hexadecimal String
+        for (i = 0; i < hex.length(); i++) {
+            // extracting each character
+            ch = hex.charAt(i);
+ 
+            // checking if the character is
+            // present in the keys
+            if (hashMap.containsKey(ch))
+ 
+                // adding to the Binary Sequence
+                // the corresponding value of
+                // the key
+                binary += hashMap.get(ch);
+ 
+            // returning Invalid Hexadecimal
+            // String if the character is
+            // not present in the keys
+            else {
+                binary = "Invalid Hexadecimal String";
+                return binary;
+            }
+        }
+ 
+        // returning the converted Binary
+        return binary;
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+      
+       sTringToHexa();
         
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        GPR1.setText(finals);
+        GPR1.setText(hex);
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-         String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        GPR2.setText(finals);
+         sTringToHexa();
+        GPR2.setText(hex);
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        GPR0.setText(finals);
+        sTringToHexa();
+        
+        GPR0.setText(hex);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        GPR3.setText(finals);
+        sTringToHexa();
+        
+        GPR3.setText(hex);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        IXR1.setText(finals);
+        sTringToHexa();
+        
+        IXR1.setText(hex);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        IXR2.setText(finals);
+        sTringToHexa();
+        
+        IXR2.setText(hex);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        IXR3.setText(finals);
+        sTringToHexa();
+        
+        IXR3.setText(hex);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        PC.setText(finals);
+        sTringToHexa();
+        
+        PC.setText(hex);
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
-         String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        MAR.setText(finals);
+         sTringToHexa();
+        
+        MAR.setText(hex);
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        MBR.setText(finals);
+        sTringToHexa();
+        
+        MBR.setText(hex);
     }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        // TODO add your handling code here:
+        
+        
+        
+        
+        String[] tokens;
+       
+        try{
+            
+        File myObj = new File("IPL.txt");
+      Scanner myReader = new Scanner(myObj);
+      while (myReader.hasNextLine()) {
+        String data = myReader.nextLine();
+         tokens = data.split(" ");
+         
+         prog.put(tokens[0],tokens[1]);
+    
+         
+         
+  
+ 
+ 
+    
+      }
+   
+       System.out.println(prog);
+      myReader.close();
+    } catch (FileNotFoundException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        // TODO add your handling code here:
+        String add= MAR.getText();
+        String res = prog.get(add);
+        MBR.setText(res);
+        System.out.println(res);
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+        prog.put(MAR.getText(),MBR.getText());
+        System.out.println(prog);
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        // TODO add your handling code here:
+        //run
+        
+         char[] ind = new char[16] ;
+         sTringToHexa();
+         
+         for (String i : prog.keySet()){
+             String bin =hexToBinary(prog.get(i));
+             programcounter++;
+             System.out.println(hexToBinary(i)+" " +hexToBinary(prog.get(i))+ programcounter);
+             System.out.println(bin);
+               execute(bin);
+//             for (int j =0; j<bin.length();j++){
+//                 ind[j]=bin.charAt(j);
+//                
+//                 
+//             }
+  for (String j : instruct.keySet()){
+                   System.out.println(j+instruct.get(j));
+            } 
+             PC.setText(Integer.toString(programcounter));
+             
+//             if(ind[6]=='1' && ind[7]=='1'){
+//            gpr3=prog.get(i);
+//                    GPR3.setText(gpr3);
+//                
+//        }
+//             if(ind[6]=='0' && ind[7]=='0'){
+//            gpr0=prog.get(i);
+//                    GPR0.setText(gpr0);
+//                
+//        }
+//             
+//             if(ind[6]=='0' && ind[7]=='1'){
+//            gpr1=prog.get(i);
+//                    GPR1.setText(gpr1);
+//                
+//        }
+//             if(ind[6]=='1' && ind[7]=='0'){
+//            gpr2=prog.get(i);
+//                    GPR2.setText(gpr2);
+//                
+//        }
+
+
+
+         }
+         
+        
+        
+        
+    }//GEN-LAST:event_jButton16ActionPerformed
+public void execute(String bin) {
+    String opcode = bin.substring(0, 6);
+              r = bin.substring(6, 8);
+		ix = bin.substring(8, 10);
+		i = bin.substring(10, 11);
+		address = bin.substring(11, 16);
+                String add=  EffectiveAddress(Hexa(address));
+               programcounter++;
+               PC.setText(Integer.toString(programcounter));
+              
+
+              System.out.println(opcode);
+                System.out.println(add);
+             String instr=OPCODE.get(opcode);
+               instruct.put(Integer.toString(programcounter),instr);
+             
+             System.out.println(instr);
+             System.out.println(r); 
+     if(instr == null){System.out.println("null");  }
+     else{
+     switch (instr){
+                 case "LDR":
+                   
+                     if ("00".equals(r)){
+                     
+                        GPR0.setText(prog.get(add));
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                     else if("01".equals(r)){
+                        
+                        GPR1.setText(prog.get(add));
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                      else if("10".equals(r)){
+                       
+                        GPR2.setText(prog.get(add));
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                      else if("11".equals(r)){
+                    
+                        GPR3.setText(prog.get(add));
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                     break;
+                 case "LDA":
+                     if ("00".equals(r)){
+                     
+                        GPR0.setText(add);
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                     else if("01".equals(r)){
+                        
+                        GPR1.setText(add);
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                      else if("10".equals(r)){
+                       
+                        GPR2.setText(add);
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                      else if("11".equals(r)){
+                    
+                        GPR3.setText(add);
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                      break;
+                case "HLT":
+                     System.out.println("HLT");
+                      break;
+                  case "STR":
+                     if ("00".equals(r)){
+                     
+                        String temp = GPR0.getText();
+                        prog.put(add,temp);
+                        System.out.println(add+temp);
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                     else if("01".equals(r)){
+                        
+                        String temp = GPR1.getText();
+                        prog.put(add,temp);
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                      else if("10".equals(r)){
+                       
+                        String temp = GPR2.getText();
+                        prog.put(add,temp);
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                      else if("11".equals(r)){
+                    
+                        String temp = GPR3.getText();
+                        prog.put(add,temp);
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                     
+                      break;
+                  case "LDX":
+                     if ("01".equals(ix)){
+                     
+                        IXR1.setText(prog.get(add));
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                     else if("10".equals(ix)){
+                        
+                        IXR2.setText(prog.get(add));
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                      else if("11".equals(ix)){
+                       
+                        IXR3.setText(prog.get(add));
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                      
+                case "STX":
+                     if("01".equals(ix)){
+                        
+                        String temp = IXR1.getText();
+                        prog.put(add,temp);
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                      else if("10".equals(ix)){
+                       
+                        String temp = IXR2.getText();
+                        prog.put(add,temp);
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                      else if("11".equals(ix)){
+                    
+                        String temp = IXR3.getText();
+                        prog.put(add,temp);
+                        MAR.setText(add);
+                        MBR.setText(prog.get(add));
+                     }
+                     
+                      break;
+                 
+                 default:
+                     System.out.println("b");
+                      break;
+                     
+    
+    
+        
+    }
+     }
+ 
+ }
+
+    
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        // TODO add your handling code here:
+         sTringToHexa();
+         
+       
+             String bin =hexToBinary(hex);
+           
+              
+             
+             execute(bin);
+             
+              
+              
+             
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_jButton15ActionPerformed
 
     /**
      * @param args the command line arguments
