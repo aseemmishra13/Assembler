@@ -5,6 +5,10 @@
 package com.mycompany.assembler;
 
 import java.awt.Color;
+import java.io.File;  // Import the File class
+import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.util.Scanner;
+import java.util.HashMap;
 
 /**
  *
@@ -20,6 +24,8 @@ public class Simulator extends javax.swing.JFrame {
          
         
     }
+   HashMap<String, String> prog = new HashMap<String, String>();
+
     String x15= "0";
     String x14= "0";
     String x13= "0";
@@ -36,6 +42,7 @@ public class Simulator extends javax.swing.JFrame {
     String x2= "0";
     String x1= "0";
     String x0= "0";
+      String hex;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -690,12 +697,27 @@ public class Simulator extends javax.swing.JFrame {
         );
 
         jButton11.setText("Store");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
 
         jButton12.setText("St+");
 
         jButton13.setText("Load");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
 
         jButton14.setText("Init");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
 
         jButton15.setText("SS");
 
@@ -1016,79 +1038,122 @@ public class Simulator extends javax.swing.JFrame {
            jToggleButton1.setForeground(Color.BLACK);
        }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
-    
+    public void sTringToHexa(){
+        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
+        int binary= Integer.parseInt(finals,2);
+         hex = Integer.toString(binary,16).toUpperCase();
+        if (hex.length() < 4)
+    hex = "000".substring(hex.length() - 1) + hex;
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+      
+       sTringToHexa();
         
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        GPR1.setText(finals);
+        GPR1.setText(hex);
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-         String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        GPR2.setText(finals);
+         sTringToHexa();
+        GPR2.setText(hex);
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        GPR0.setText(finals);
+        sTringToHexa();
+        
+        GPR0.setText(hex);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        GPR3.setText(finals);
+        sTringToHexa();
+        
+        GPR3.setText(hex);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        IXR1.setText(finals);
+        sTringToHexa();
+        
+        IXR1.setText(hex);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        IXR2.setText(finals);
+        sTringToHexa();
+        
+        IXR2.setText(hex);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        IXR3.setText(finals);
+        sTringToHexa();
+        
+        IXR3.setText(hex);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        PC.setText(finals);
+        sTringToHexa();
+        
+        PC.setText(hex);
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
-         String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        MAR.setText(finals);
+         sTringToHexa();
+        
+        MAR.setText(hex);
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        double binary= Double.parseDouble(finals);
-        MBR.setText(finals);
+        sTringToHexa();
+        
+        MBR.setText(hex);
     }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        // TODO add your handling code here:
+        String[] tokens;
+        try{
+            
+        File myObj = new File("IPL.txt");
+      Scanner myReader = new Scanner(myObj);
+      while (myReader.hasNextLine()) {
+        String data = myReader.nextLine();
+         tokens = data.split(" ");
+         prog.put(tokens[0],tokens[1]);
+  
+ 
+ 
+    
+      }
+       System.out.println(prog);
+      myReader.close();
+    } catch (FileNotFoundException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        // TODO add your handling code here:
+        String add= MAR.getText();
+        String res = prog.get(add);
+        MBR.setText(res);
+        System.out.println(res);
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+        prog.put(MAR.getText(),MBR.getText());
+        System.out.println(prog);
+    }//GEN-LAST:event_jButton11ActionPerformed
 
     /**
      * @param args the command line arguments
