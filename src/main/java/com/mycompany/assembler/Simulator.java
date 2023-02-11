@@ -25,6 +25,7 @@ public class Simulator extends javax.swing.JFrame {
         
     }
    HashMap<String, String> prog = new HashMap<String, String>();
+<<<<<<< HEAD
    HashMap<String, String> instruct = new HashMap<String, String>();
  
     int programcounter=0;
@@ -34,6 +35,9 @@ public class Simulator extends javax.swing.JFrame {
     String i="";
     String address="0000";
     
+=======
+
+>>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
     String x15= "0";
     String x14= "0";
     String x13= "0";
@@ -50,6 +54,7 @@ public class Simulator extends javax.swing.JFrame {
     String x2= "0";
     String x1= "0";
     String x0= "0";
+<<<<<<< HEAD
     String gpr0="0";
     String gpr1="0";
     String gpr2="0";
@@ -72,6 +77,9 @@ public class Simulator extends javax.swing.JFrame {
                 System.out.println(OPCODE);
 	}
 
+=======
+      String hex;
+>>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1083,6 +1091,7 @@ public class Simulator extends javax.swing.JFrame {
          hex = Integer.toString(binary,16).toUpperCase();
         if (hex.length() < 4)
     hex = "000".substring(hex.length() - 1) + hex;
+<<<<<<< HEAD
         
     }
     String EffectiveAddress (String address){
@@ -1199,6 +1208,8 @@ public class Simulator extends javax.swing.JFrame {
  
         // returning the converted Binary
         return binary;
+=======
+>>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
     }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -1274,12 +1285,16 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         // TODO add your handling code here:
+<<<<<<< HEAD
         
         
         
         
         String[] tokens;
        
+=======
+        String[] tokens;
+>>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
         try{
             
         File myObj = new File("IPL.txt");
@@ -1287,17 +1302,24 @@ public class Simulator extends javax.swing.JFrame {
       while (myReader.hasNextLine()) {
         String data = myReader.nextLine();
          tokens = data.split(" ");
+<<<<<<< HEAD
          
          prog.put(tokens[0],tokens[1]);
     
          
          
+=======
+         prog.put(tokens[0],tokens[1]);
+>>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
   
  
  
     
       }
+<<<<<<< HEAD
    
+=======
+>>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
        System.out.println(prog);
       myReader.close();
     } catch (FileNotFoundException e) {
@@ -1320,6 +1342,7 @@ public class Simulator extends javax.swing.JFrame {
         System.out.println(prog);
     }//GEN-LAST:event_jButton11ActionPerformed
 
+<<<<<<< HEAD
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         // TODO add your handling code here:
         //run
@@ -1561,6 +1584,8 @@ public void execute(String bin) {
         
     }//GEN-LAST:event_jButton15ActionPerformed
 
+=======
+>>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
     /**
      * @param args the command line arguments
      */
