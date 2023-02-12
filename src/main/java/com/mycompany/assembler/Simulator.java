@@ -4,11 +4,14 @@
  */
 package com.mycompany.assembler;
 
+import com.sun.tools.javac.Main;
 import java.awt.Color;
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.io.InputStream;
 import java.util.Scanner;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,50 +24,47 @@ public class Simulator extends javax.swing.JFrame {
      */
     public Simulator() {
         initComponents();
+        
          
         
     }
-   HashMap<String, String> prog = new HashMap<String, String>();
-<<<<<<< HEAD
+   HashMap<String, String> prog = new HashMap<String, String>(); //create a memory to store value and its address
+  
    HashMap<String, String> instruct = new HashMap<String, String>();
  
-    int programcounter=0;
-    String r="";
-    String x="";
-    String ix="";
-    String i="";
-    String address="0000";
-    
-=======
+    int programcounter=0; //initialize program counter
+    String r="";//genereal register 
 
->>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
-    String x15= "0";
-    String x14= "0";
-    String x13= "0";
-    String x12= "0";
-    String x11= "0";
-    String x10= "0";
-    String x9= "0";
-    String x8= "0";
-    String x7= "0";
-    String x6= "0";
-    String x5= "0";
-    String x4= "0";
-    String x3= "0";
-    String x2= "0";
-    String x1= "0";
-    String x0= "0";
-<<<<<<< HEAD
-    String gpr0="0";
-    String gpr1="0";
-    String gpr2="0";
-    String gpr3="0";
-    String ixr1="0";
-    String ixr2="0";
-    String ixr3="0";
+    String ix="";//index registers
+    String i="";//indirect addressing
+    String address="0000";// starting address
+    String Halt="Start";//halt var initializedto start
+    String x15= "0"; //Instruction toggle bit
+    String x14= "0";//Instruction toggle bit
+    String x13= "0";//Instruction toggle bit
+    String x12= "0";//Instruction toggle bit
+    String x11= "0";//Instruction toggle bit
+    String x10= "0";//Instruction toggle bit
+    String x9= "0";//Instruction toggle bit
+    String x8= "0";//Instruction toggle bit
+    String x7= "0";//Instruction toggle bit
+    String x6= "0";//Instruction toggle bit
+    String x5= "0";//Instruction toggle bit
+    String x4= "0";//Instruction toggle bit
+    String x3= "0";//Instruction toggle bit
+    String x2= "0";//Instruction toggle bit
+    String x1= "0";//Instruction toggle bit
+    String x0= "0";//Instruction toggle bit
+    String gpr0="0";//general register
+    String gpr1="0";//general register
+    String gpr2="0";//general register
+    String gpr3="0";//general register
+    String ixr1="0";//indirect register
+    String ixr2="0";//indirect register
+    String ixr3="0";//indirect register
       String hex;
       
-      public static final HashMap<String, String> OPCODE = new HashMap<String, String>();
+      public static final HashMap<String, String> OPCODE = new HashMap<String, String>();//opcodes mappes to their binary equivalent
 	static {
 		OPCODE.put("000000", "HLT");
 		OPCODE.put("011110", "TRAP");
@@ -76,10 +76,7 @@ public class Simulator extends javax.swing.JFrame {
 		
                 System.out.println(OPCODE);
 	}
-
-=======
-      String hex;
->>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
+// Code t genereate GUI
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -166,6 +163,7 @@ public class Simulator extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(153, 255, 255));
 
         jLabel1.setText("GPR 0");
 
@@ -469,21 +467,19 @@ public class Simulator extends javax.swing.JFrame {
             AddressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddressLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jToggleButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel15)
+                .addGap(37, 37, 37))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddressLayout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addComponent(jToggleButton12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(jToggleButton10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jToggleButton11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(AddressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(AddressLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel15))
-                    .addGroup(AddressLayout.createSequentialGroup()
-                        .addComponent(jToggleButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToggleButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToggleButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToggleButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(17, 17, 17))
+                .addComponent(jToggleButton9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToggleButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         AddressLayout.setVerticalGroup(
             AddressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -515,11 +511,11 @@ public class Simulator extends javax.swing.JFrame {
             ILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ILayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jToggleButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ILayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(ILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ILayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jToggleButton17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         ILayout.setVerticalGroup(
@@ -553,16 +549,16 @@ public class Simulator extends javax.swing.JFrame {
         IXR_inputLayout.setHorizontalGroup(
             IXR_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(IXR_inputLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
                 .addGroup(IXR_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(IXR_inputLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                        .addGap(22, 22, 22)
                         .addComponent(jLabel17))
                     .addGroup(IXR_inputLayout.createSequentialGroup()
-                        .addComponent(jToggleButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jToggleButton15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToggleButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(8, Short.MAX_VALUE))
+                        .addComponent(jToggleButton14)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         IXR_inputLayout.setVerticalGroup(
             IXR_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -601,10 +597,10 @@ public class Simulator extends javax.swing.JFrame {
                 .addGroup(GPR_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel18)
                     .addGroup(GPR_inputLayout.createSequentialGroup()
-                        .addComponent(jToggleButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jToggleButton7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToggleButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(25, 25, 25))
+                        .addComponent(jToggleButton16)))
+                .addGap(17, 17, 17))
         );
         GPR_inputLayout.setVerticalGroup(
             GPR_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -708,13 +704,13 @@ public class Simulator extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(GPR_input, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(GPR_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(IXR_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(I, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Address, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(I, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(Address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -822,45 +818,43 @@ public class Simulator extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(GPR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(IXR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(43, Short.MAX_VALUE)
+                .addGap(204, 204, 204)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(0, 0, 0)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
                         .addComponent(GPR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(IXR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
+                        .addGap(11, 11, 11)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jToggleButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton8ActionPerformed
-       boolean selected = jToggleButton8.getModel().isSelected();
+       //code to toggle 1 or 0 in Instruction buttons
+        boolean selected = jToggleButton8.getModel().isSelected();
        if (selected){
             x0="1";
     jToggleButton8.setForeground(Color.RED);
@@ -876,6 +870,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton9ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
           boolean selected = jToggleButton9.getModel().isSelected();
        if (selected){
            x1="1";
@@ -891,6 +886,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton11ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
           boolean selected = jToggleButton11.getModel().isSelected();
        if (selected){
             x2="1";
@@ -905,6 +901,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton10ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton10.getModel().isSelected();
        if (selected){
             x3="1";
@@ -919,6 +916,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton12ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton12.getModel().isSelected();
        if (selected){
             x4="1";
@@ -933,6 +931,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton17ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton17.getModel().isSelected();
        if (selected){
             x5="1";
@@ -947,6 +946,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton14ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton14.getModel().isSelected();
        if (selected){
            x6="1";
@@ -962,6 +962,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton15ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton15.getModel().isSelected();
        if (selected){
             x7="1";
@@ -976,6 +977,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton16ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton16.getModel().isSelected();
        if (selected){
             x8="1";
@@ -990,6 +992,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton7ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton7.getModel().isSelected();
        if (selected){
             x9="1";
@@ -1004,6 +1007,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton6.getModel().isSelected();
        if (selected){
             x10="1";
@@ -1018,6 +1022,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton5ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton5.getModel().isSelected();
        if (selected){
             x11="1";
@@ -1032,6 +1037,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton4.getModel().isSelected();
        if (selected){
             x12="1";
@@ -1046,6 +1052,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton3.getModel().isSelected();
        if (selected){
             x13="1";
@@ -1060,6 +1067,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton2.getModel().isSelected();
        if (selected){
             x14="1";
@@ -1074,6 +1082,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         // TODO add your handling code here:
+        //code to toggle 1 or 0 in Instruction buttons
          boolean selected = jToggleButton1.getModel().isSelected();
        if (selected){
             x15="1";
@@ -1086,22 +1095,35 @@ public class Simulator extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
     public void sTringToHexa(){
-        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;
-        int binary= Integer.parseInt(finals,2);
-         hex = Integer.toString(binary,16).toUpperCase();
-        if (hex.length() < 4)
+        //function to combine all bits from instruction buttons to one single binary number which is converted to hexa decimal value
+        String finals=x15+x14+x13+x12+x11+x10+x9+x8+x7+x6+x5+x4+x3+x2+x1+x0;//concate each bit
+        int binary= Integer.parseInt(finals,2);//convert to binary int
+         hex = Integer.toString(binary,16).toUpperCase();//convert to hexa
+        if (hex.length() < 4)//add trailing zeroes
     hex = "000".substring(hex.length() - 1) + hex;
-<<<<<<< HEAD
         
     }
-    String EffectiveAddress (String address){
-    
+     
+    String EffectiveAddress (String address, String bin){
+    //function to calculate and return effective address depeinding on value of "I" bit
     sTringToHexa();
          String add= address;
        
-             String bin =hexToBinary(hex);
+           
              
-              address = bin.substring(6, 8);
+             // address = bin.substring(6, 8);
+             
+             //split binary code into different components (indirect addressing,index registers)
+             /* 
+             
+             Effective Address (EA) =
+                    I = 0:
+                    IX = 00: content (address field)
+                    IX = 01 or 10 or 11: content(IX) + content of address field
+                    I = 1:
+                    IX = 00: content (content (address field))
+                    IX = 01 or 10 or 11: content(content(IX) + content of address field)
+             */
               i = bin.substring(10, 11);
                ix = bin.substring(8, 10);
                if ("0".equals(i)){
@@ -1109,36 +1131,109 @@ public class Simulator extends javax.swing.JFrame {
                        return add;
                    }
                    else if ("01".equals(ix)){
-                       return add+IXR1.getText();
+                       int decimal1=Integer.parseInt(add,16); 
+                       int decimal2=0;
+                       if(IXR1.getText() == null || "".equals( IXR1.getText())){
+                       decimal2=0;
+                   }else{
+                        decimal2=Integer.parseInt(IXR1.getText(),16); 
+                       }
+                       int sum = decimal1+decimal2;
+                     
+                       
+                       return DecimaltoHexa(sum);
                    }
                    else if ("10".equals(ix)){
-                       return add+IXR2.getText();
+                       int decimal1=Integer.parseInt(add,16); 
+                       int decimal2=0;
+                       if(IXR2.getText() == null || "".equals( IXR2.getText())){
+                       decimal2=0;
+                   }else{
+                        decimal2=Integer.parseInt(IXR2.getText(),16); 
+                       }
+                       int sum = decimal1+decimal2;
+                     
+                       
+                       return DecimaltoHexa(sum);
                    }
                    else if ("11".equals(ix)){
-                       return add+IXR3.getText();
+                       int decimal1=Integer.parseInt(add,16); 
+                       int decimal2=0;
+                       if(IXR3.getText() == null || "".equals( IXR3.getText())){
+                       decimal2=0;
+                   }else{
+                        decimal2=Integer.parseInt(IXR3.getText(),16); 
+                       }
+                       int sum = decimal1+decimal2;
+                     
+                       
+                       return DecimaltoHexa(sum);
                    }
                }
                else {
                     if ("00".equals(ix)){
+                        
                         return prog.get(add);
                         
                     }
                    else if ("01".equals(ix)){
-                       return prog.get(add)+prog.get(ix);
+                       int decimal1=Integer.parseInt(prog.get(add),16); 
+                       int decimal2=0;
+                       if(prog.get(IXR1.getText()) == null || "".equals( prog.get(IXR1.getText()))){
+                       decimal2=0;
+                   }else{
+                        decimal2=Integer.parseInt(prog.get(IXR1.getText()),16); 
+                       }
+                       int sum = decimal1+decimal2;
+                     
+                       
+                       return DecimaltoHexa(sum);
+                       
+                       
+                      
                    }
                    else if ("10".equals(ix)){
-                       return prog.get(add)+prog.get(ix);
+                        int decimal1=Integer.parseInt(prog.get(add),16); 
+                       int decimal2=0;
+                       if(prog.get(IXR2.getText()) == null || "".equals( prog.get(IXR2.getText()))){
+                       decimal2=0;
+                   }else{
+                        decimal2=Integer.parseInt(prog.get(IXR2.getText()),16); 
+                       }
+                       int sum = decimal1+decimal2;
+                     
+                       
+                       return DecimaltoHexa(sum);
                    }
                    else if ("11".equals(ix)){
-                       return prog.get(add)+prog.get(ix);
+                         int decimal1=Integer.parseInt(prog.get(add),16); 
+                       int decimal2=0;
+                       if(prog.get(IXR3.getText()) == null || "".equals( prog.get(IXR3.getText()))){
+                       decimal2=0;
+                   }else{
+                        decimal2=Integer.parseInt(prog.get(IXR3.getText()),16); 
+                       }
+                       int sum = decimal1+decimal2;
+                     
+                       
+                       return DecimaltoHexa(sum);
                    }
                
                }
               
               return address;
     }
-   String Hexa(String hexas){
+     String DecimaltoHexa(int dec){
+       //convert Decimal to hexa decimal
        
+         hex = Integer.toString(dec,16).toUpperCase();
+        if (hex.length() < 4)
+    hex = "000".substring(hex.length() - 1) + hex;
+        return hex;
+        
+    }
+   String Hexa(String hexas){
+       //accepts binary and returns hexadecimal
         int binary= Integer.parseInt(hexas,2);
          hex = Integer.toString(binary,16).toUpperCase();
         if (hex.length() < 4)
@@ -1148,7 +1243,7 @@ public class Simulator extends javax.swing.JFrame {
     }
      String hexToBinary(String hex)
     {
- 
+        //code to accept and convert hexadecimal to binary
         // variable to store the converted
         // Binary Sequence
         String binary = "";
@@ -1208,62 +1303,74 @@ public class Simulator extends javax.swing.JFrame {
  
         // returning the converted Binary
         return binary;
-=======
->>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
     }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-      
+      //setting value to general purpose register
        sTringToHexa();
         
         GPR1.setText(hex);
+        gpr1=GPR1.getText();
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+         //setting value to general purpose register
          sTringToHexa();
         GPR2.setText(hex);
+        gpr2=GPR2.getText();
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+         //setting value to general purpose register
         sTringToHexa();
         
         GPR0.setText(hex);
+        gpr0=GPR0.getText();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+         //setting value to general purpose register
         sTringToHexa();
         
         GPR3.setText(hex);
+        gpr3=GPR3.getText();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+         //setting value to index register
         sTringToHexa();
         
         IXR1.setText(hex);
+        ixr1=IXR1.getText();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+        //setting value to index register
         sTringToHexa();
         
         IXR2.setText(hex);
+        ixr2=IXR2.getText();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
+        //setting value to index register
         sTringToHexa();
         
         IXR3.setText(hex);
+        ixr3=IXR3.getText();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
+        //setting value to Program counter
         sTringToHexa();
         
         PC.setText(hex);
@@ -1271,6 +1378,7 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
+        //Setting value to MAR
          sTringToHexa();
         
         MAR.setText(hex);
@@ -1279,47 +1387,58 @@ public class Simulator extends javax.swing.JFrame {
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
         sTringToHexa();
+         //Setting value to MBR
         
         MBR.setText(hex);
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         // TODO add your handling code here:
-<<<<<<< HEAD
+        //init button 
         
-        
-        
+        //set all text fields,memory,registers and program counters to null/0
+        programcounter=0;
+     GPR0.setText("");
+     GPR1.setText("");
+     GPR2.setText("");
+     GPR3.setText("");
+     IXR1.setText("");
+     IXR2.setText("");
+     IXR3.setText("");
+     MAR.setText("");
+     MBR.setText("");
+     IR.setText("");
+        PC.setText("0000");
+//        new Simulator().setVisible(true);
+//        this.setVisible(false);
+     Halt="Start";
+      jLabel19.setForeground(Color.BLACK); //Halt button color is black when code is running
+     
         
         String[] tokens;
        
-=======
-        String[] tokens;
->>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
         try{
             
-        File myObj = new File("IPL.txt");
+        File myObj = new File("IPL.txt"); //opens file "IPL.txt"
       Scanner myReader = new Scanner(myObj);
+        
       while (myReader.hasNextLine()) {
         String data = myReader.nextLine();
          tokens = data.split(" ");
-<<<<<<< HEAD
+         if(prog.size() == 2048){           // sets memory to 2048 words
+             JOptionPane.showMessageDialog(null,"Word memory reached");
+           
+       }else{
+         prog.put(tokens[0],tokens[1]);   //sets value and their address in memory
+         }
          
-         prog.put(tokens[0],tokens[1]);
-    
          
-         
-=======
-         prog.put(tokens[0],tokens[1]);
->>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
   
  
  
     
       }
-<<<<<<< HEAD
    
-=======
->>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
        System.out.println(prog);
       myReader.close();
     } catch (FileNotFoundException e) {
@@ -1330,41 +1449,46 @@ public class Simulator extends javax.swing.JFrame {
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:
-        String add= MAR.getText();
-        String res = prog.get(add);
-        MBR.setText(res);
+        //load button
+        String add= MAR.getText(); //extract contect of MAR
+        String res = prog.get(add); //extract value at MAR 
+        MBR.setText(res);//sets the result value
         System.out.println(res);
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
-        prog.put(MAR.getText(),MBR.getText());
+        //store
+        prog.put(MAR.getText(),MBR.getText());//sets MAR and MBR in memory
         System.out.println(prog);
     }//GEN-LAST:event_jButton11ActionPerformed
 
-<<<<<<< HEAD
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         // TODO add your handling code here:
-        //run
-        
-         char[] ind = new char[16] ;
+        //run button
+      
          sTringToHexa();
-         
-         for (String i : prog.keySet()){
-             String bin =hexToBinary(prog.get(i));
+          
+                   
+                  
+             
+      
+         for (String i : prog.keySet()){ //iterate over memory
+             String bin =hexToBinary(prog.get(i)); //extarcts binary from the vlaue staored at i address
              programcounter++;
-             System.out.println(hexToBinary(i)+" " +hexToBinary(prog.get(i))+ programcounter);
+             System.out.println("i" + hexToBinary(i)+" " +"value"+hexToBinary(prog.get(i))+ programcounter); 
              System.out.println(bin);
-               execute(bin);
+               execute(i,bin); //pass address and converted binary values to  execute function
+               IR.setText(bin); //set instruction register
+              
 //             for (int j =0; j<bin.length();j++){
 //                 ind[j]=bin.charAt(j);
 //                
 //                 
 //             }
-  for (String j : instruct.keySet()){
-                   System.out.println(j+instruct.get(j));
-            } 
-             PC.setText(Integer.toString(programcounter));
+
+             PC.setText(i); //set program counter
+               instruct.put(i,bin); // record instruction and program counter in memory
              
 //             if(ind[6]=='1' && ind[7]=='1'){
 //            gpr3=prog.get(i);
@@ -1391,31 +1515,42 @@ public class Simulator extends javax.swing.JFrame {
 
 
          }
+        
+                   jLabel19.setForeground(Color.red); //when halted the font color changes
          
         
         
         
     }//GEN-LAST:event_jButton16ActionPerformed
-public void execute(String bin) {
-    String opcode = bin.substring(0, 6);
-              r = bin.substring(6, 8);
-		ix = bin.substring(8, 10);
-		i = bin.substring(10, 11);
-		address = bin.substring(11, 16);
-                String add=  EffectiveAddress(Hexa(address));
-               programcounter++;
-               PC.setText(Integer.toString(programcounter));
+public void execute(String prc,String bin) {
+    //function to execute the instruction
+    
+    String opcode = bin.substring(0, 6); //extracts opcode
+              r = bin.substring(6, 8); //extracts general register location
+		ix = bin.substring(8, 10); //extracts index register location
+		i = bin.substring(10, 11); //indirect addressung
+		address = bin.substring(11, 16);// exctracts address value
+               String add=  EffectiveAddress(Hexa(address),bin); //converts address to effective address
+           
+              
+               
               
 
               System.out.println(opcode);
                 System.out.println(add);
-             String instr=OPCODE.get(opcode);
-               instruct.put(Integer.toString(programcounter),instr);
+             String instr=OPCODE.get(opcode); //extracts instruction to be executed
              
+//               for (String i : instruct.keySet()){
+//               //    System.out.println(i+instruct.get(i)+"ix:"+ix+"add"+add);
+//                   PC.setText(i);
+//            } 
              System.out.println(instr);
              System.out.println(r); 
-     if(instr == null){System.out.println("null");  }
+     if(instr == "HLT"){System.out.println("null");// halt
+     Halt="end";
+     }
      else{
+         //instruction execution
      switch (instr){
                  case "LDR":
                    
@@ -1472,6 +1607,7 @@ public void execute(String bin) {
                       break;
                 case "HLT":
                      System.out.println("HLT");
+                      Halt="end";
                       break;
                   case "STR":
                      if ("00".equals(r)){
@@ -1507,19 +1643,19 @@ public void execute(String bin) {
                       break;
                   case "LDX":
                      if ("01".equals(ix)){
-                     
+                         System.out.println("hello");
                         IXR1.setText(prog.get(add));
                         MAR.setText(add);
                         MBR.setText(prog.get(add));
                      }
                      else if("10".equals(ix)){
-                        
+                        System.out.println("hello");
                         IXR2.setText(prog.get(add));
                         MAR.setText(add);
                         MBR.setText(prog.get(add));
                      }
                       else if("11".equals(ix)){
-                       
+                       System.out.println("hello");
                         IXR3.setText(prog.get(add));
                         MAR.setText(add);
                         MBR.setText(prog.get(add));
@@ -1565,14 +1701,38 @@ public void execute(String bin) {
     
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         // TODO add your handling code here:
+        //Single Step
          sTringToHexa();
-         
+         jLabel19.setForeground(Color.BLACK); //set halt color to black when code is running
        
-             String bin =hexToBinary(hex);
-           
-              
              
-             execute(bin);
+           
+             int  prc=Integer.parseInt(PC.getText(),16); //extract program counter value
+            
+              String bin =hexToBinary(prog.get(PC.getText())); // extracts binary form instruction at program counter
+         //    String bin =instruct.get(Integer.toString(prc));
+            
+             System.out.println(bin);
+//             if (prc>=programcounter){
+//                 programcounter++;
+//                 PC.setText(DecimaltoHexa(programcounter));
+//             }
+             
+             execute(PC.getText(),bin);// execute the instruction
+             prc++;
+             PC.setText(DecimaltoHexa(prc));
+             IR.setText(bin);
+             String end=LastAdd(PC.getText());// Halt foreground color changed to red when reached end address
+             if("ends".equals(end)){
+             jLabel19.setForeground(Color.red);
+             PC.setText("0000");
+             
+              execute(PC.getText(),prog.get(PC.getText()));
+             
+             
+             }
+             
+             
              
               
               
@@ -1583,9 +1743,18 @@ public void execute(String bin) {
         
         
     }//GEN-LAST:event_jButton15ActionPerformed
-
-=======
->>>>>>> 9215cfcb834da0fdc0ece1f0e157cbfd3a2d7b1d
+    
+    String LastAdd(String addr){
+        int count=0;
+        for (String i : prog.keySet()){
+            if (i.equals(addr)){
+                count++;
+            }
+        }
+        if(count==0){return "ends";}
+        System.out.println("count"+count);
+        return "hel";
+    }
     /**
      * @param args the command line arguments
      */
@@ -1617,6 +1786,7 @@ public void execute(String bin) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Simulator().setVisible(true);
+                
             }
         });
     }

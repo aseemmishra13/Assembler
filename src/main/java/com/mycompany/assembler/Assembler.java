@@ -16,6 +16,7 @@ public class Assembler {
             public void run() {
                 new Simulator().setVisible(true);
             }
+            
         });
         
         
