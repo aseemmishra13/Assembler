@@ -1409,6 +1409,7 @@ public class Simulator extends javax.swing.JFrame {
      MBR.setText("");
      IR.setText("");
         PC.setText("0000");
+        prog.clear();
 //        new Simulator().setVisible(true);
 //        this.setVisible(false);
      Halt="Start";
@@ -1470,15 +1471,21 @@ public class Simulator extends javax.swing.JFrame {
          sTringToHexa();
           
                    
-                  
+                  int  prc=Integer.parseInt(PC.getText(),16);
              
       
          for (String i : prog.keySet()){ //iterate over memory
-             String bin =hexToBinary(prog.get(i)); //extarcts binary from the vlaue staored at i address
+             String bin =hexToBinary(prog.get(PC.getText())); //extarcts binary from the vlaue staored at i address
              programcounter++;
              System.out.println("i" + hexToBinary(i)+" " +"value"+hexToBinary(prog.get(i))+ programcounter); 
              System.out.println(bin);
-               execute(i,bin); //pass address and converted binary values to  execute function
+             
+         
+               execute(PC.getText(),bin); //pass address and converted binary values to  execute function
+                prc++;
+             PC.setText(DecimaltoHexa(prc));
+             
+            
                IR.setText(bin); //set instruction register
               
 //             for (int j =0; j<bin.length();j++){
@@ -1487,7 +1494,7 @@ public class Simulator extends javax.swing.JFrame {
 //                 
 //             }
 
-             PC.setText(i); //set program counter
+           //  PC.setText(i); //set program counter
                instruct.put(i,bin); // record instruction and program counter in memory
              
 //             if(ind[6]=='1' && ind[7]=='1'){
