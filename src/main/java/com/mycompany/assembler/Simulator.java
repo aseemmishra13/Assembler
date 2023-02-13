@@ -71,8 +71,8 @@ public class Simulator extends javax.swing.JFrame {
 		OPCODE.put("000001", "LDR");
 		OPCODE.put("000010", "STR");
 		OPCODE.put("000011", "LDA");
-		OPCODE.put("101001", "LDX");
-		OPCODE.put("101010", "STX");
+		OPCODE.put("100001", "LDX");
+		OPCODE.put("100010", "STX");
 		
                 System.out.println(OPCODE);
 	}
@@ -1126,6 +1126,8 @@ public class Simulator extends javax.swing.JFrame {
              */
               i = bin.substring(10, 11);
                ix = bin.substring(8, 10);
+               
+               
                if ("0".equals(i)){
                    if ("00".equals(ix)){
                        return add;
@@ -1176,50 +1178,91 @@ public class Simulator extends javax.swing.JFrame {
                         return prog.get(add);
                         
                     }
-                   else if ("01".equals(ix)){
-                       int decimal1=Integer.parseInt(prog.get(add),16); 
+                    else if ("01".equals(ix)){
+                       int decimal1=Integer.parseInt(add,16); 
                        int decimal2=0;
-                       if(prog.get(IXR1.getText()) == null || "".equals( prog.get(IXR1.getText()))){
+                       if(IXR1.getText() == null || "".equals( IXR1.getText())){
                        decimal2=0;
                    }else{
-                        decimal2=Integer.parseInt(prog.get(IXR1.getText()),16); 
+                        decimal2=Integer.parseInt(IXR1.getText(),16); 
                        }
                        int sum = decimal1+decimal2;
                      
                        
-                       return DecimaltoHexa(sum);
-                       
-                       
-                      
+                        return prog.get(DecimaltoHexa(sum));
                    }
                    else if ("10".equals(ix)){
-                        int decimal1=Integer.parseInt(prog.get(add),16); 
+                       int decimal1=Integer.parseInt(add,16); 
                        int decimal2=0;
-                       if(prog.get(IXR2.getText()) == null || "".equals( prog.get(IXR2.getText()))){
+                       if(IXR2.getText() == null || "".equals( IXR2.getText())){
                        decimal2=0;
                    }else{
-                        decimal2=Integer.parseInt(prog.get(IXR2.getText()),16); 
+                        decimal2=Integer.parseInt(IXR2.getText(),16); 
                        }
                        int sum = decimal1+decimal2;
                      
                        
-                       return DecimaltoHexa(sum);
+                       return prog.get(DecimaltoHexa(sum));
                    }
                    else if ("11".equals(ix)){
-                         int decimal1=Integer.parseInt(prog.get(add),16); 
+                       int decimal1=Integer.parseInt(add,16); 
                        int decimal2=0;
-                       if(prog.get(IXR3.getText()) == null || "".equals( prog.get(IXR3.getText()))){
+                       if(IXR3.getText() == null || "".equals( IXR3.getText())){
                        decimal2=0;
                    }else{
-                        decimal2=Integer.parseInt(prog.get(IXR3.getText()),16); 
+                        decimal2=Integer.parseInt(IXR3.getText(),16); 
                        }
                        int sum = decimal1+decimal2;
                      
                        
-                       return DecimaltoHexa(sum);
+                        return prog.get(DecimaltoHexa(sum));
                    }
+//                   else if ("01".equals(ix)){
+//                       int decimal1=Integer.parseInt(prog.get(add),16); 
+//                       int decimal2=0;
+//                       if(prog.get(IXR1.getText()) == null || "".equals( prog.get(IXR1.getText()))){
+//                       decimal2=0;
+//                   }else{
+//                        decimal2=Integer.parseInt(prog.get(IXR1.getText()),16); 
+//                       }
+//                       int sum = decimal1+decimal2;
+//                     
+//                       
+//                       return prog.get(DecimaltoHexa(sum));
+//                       
+//                       
+//                      
+//                   }
+//                   else if ("10".equals(ix)){
+//                        int decimal1=Integer.parseInt(prog.get(add),16); 
+//                       int decimal2=0;
+//                       if(prog.get(IXR2.getText()) == null || "".equals( prog.get(IXR2.getText()))){
+//                       decimal2=0;
+//                   }else{
+//                        decimal2=Integer.parseInt(prog.get(IXR2.getText()),16); 
+//                       }
+//                       int sum = decimal1+decimal2;
+//                     
+//                       
+//                     return prog.get(DecimaltoHexa(sum));
+//                   }
+//                   else if ("11".equals(ix)){
+//                         int decimal1=Integer.parseInt(prog.get(add),16); 
+//                       int decimal2=0;
+//                       if(prog.get(IXR3.getText()) == null || "".equals( prog.get(IXR3.getText()))){
+//                       decimal2=0;
+//                   }else{
+//                        decimal2=Integer.parseInt(prog.get(IXR3.getText()),16); 
+//                       }
+//                       int sum = decimal1+decimal2;
+//                     
+//                       
+//                      return prog.get(DecimaltoHexa(sum));
+//                   }
+                 
                
                }
+                  System.out.println("i"+i+"ix"+ix);
               
               return address;
     }
