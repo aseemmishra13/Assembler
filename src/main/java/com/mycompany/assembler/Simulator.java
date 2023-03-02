@@ -62,6 +62,8 @@ public class Simulator extends javax.swing.JFrame {
     String ixr1="0";//indirect register
     String ixr2="0";//indirect register
     String ixr3="0";//indirect register
+    boolean pc1=true;
+    int cc=0;
       String hex;
       
       public static final HashMap<String, String> OPCODE = new HashMap<String, String>();//opcodes mappes to their binary equivalent
@@ -71,9 +73,30 @@ public class Simulator extends javax.swing.JFrame {
 		OPCODE.put("000001", "LDR");
 		OPCODE.put("000010", "STR");
 		OPCODE.put("000011", "LDA");
+                OPCODE.put("000100", "AMR");
+                OPCODE.put("000101", "SMR");
+                OPCODE.put("000110", "AIR");
+                OPCODE.put("000111", "SIR");
 		OPCODE.put("100001", "LDX");
 		OPCODE.put("100010", "STX");
-		
+		OPCODE.put("001000", "JZ");
+                OPCODE.put("001001", "JNE");
+                OPCODE.put("001010", "JCC");
+                OPCODE.put("001011", "JMA");
+                OPCODE.put("001100", "JSR");
+                OPCODE.put("001101", "RFS");
+                OPCODE.put("001110", "SOB");
+                OPCODE.put("001111", "JGE");
+                OPCODE.put("010000", "MLT");
+                OPCODE.put("010001", "DVD");
+                OPCODE.put("010010", "TRR");
+                OPCODE.put("010011", "AND");
+                OPCODE.put("010100", "ORR");
+                OPCODE.put("010101", "NOT");
+          
+                OPCODE.put("011001", "SRC");
+                OPCODE.put("011010", "RRC");
+                
                 System.out.println(OPCODE);
 	}
 // Code t genereate GUI
@@ -1522,11 +1545,11 @@ public class Simulator extends javax.swing.JFrame {
              programcounter++;
              System.out.println("i" + hexToBinary(i)+" " +"value"+hexToBinary(prog.get(i))+ programcounter); 
              System.out.println(bin);
-             
+             prc++;
+             PC.setText(DecimaltoHexa(prc));
          
                execute(PC.getText(),bin); //pass address and converted binary values to  execute function
-                prc++;
-             PC.setText(DecimaltoHexa(prc));
+                
              
             
                IR.setText(bin); //set instruction register
@@ -1691,6 +1714,7 @@ public void execute(String prc,String bin) {
                      }
                      
                       break;
+                      
                   case "LDX":
                      if ("01".equals(ix)){
                          System.out.println("hello");
@@ -1710,6 +1734,7 @@ public void execute(String prc,String bin) {
                         MAR.setText(add);
                         MBR.setText(prog.get(add));
                      }
+                     break;
                       
                 case "STX":
                      if("01".equals(ix)){
@@ -1735,7 +1760,562 @@ public void execute(String prc,String bin) {
                      }
                      
                       break;
-                 
+                      
+                case "JZ":
+                     if ("00".equals(r)){
+                     
+                        String temp = GPR0.getText();
+                        
+                        if("0000".equals(temp)){
+                            pc1=false;
+                            PC.setText(add);
+                     
+                            System.out.println(add);
+                        }
+                        
+                     
+                     }
+                     else if("01".equals(r)){
+                        
+                        String temp = GPR1.getText();
+                        
+                        if("0000".equals(temp)){
+                            pc1=false;
+                            PC.setText(add);
+                     
+                            System.out.println(add);
+                        }
+                        
+                     }
+                      else if("10".equals(r)){
+                       
+                        String temp = GPR2.getText();
+                     if("0000".equals(temp)){
+                            pc1=false;
+                            PC.setText(add);
+                     
+                            System.out.println(add);
+                        }
+                     }
+                      else if("11".equals(r)){
+                    
+                        String temp = GPR3.getText();
+                       if("0000".equals(temp)){
+                            pc1=false;
+                            PC.setText(add);
+                     
+                            System.out.println(add);
+                        }
+                     }
+                     
+                      break;
+                
+                      
+                  case "JNE":
+                     if ("00".equals(r)){
+                     
+                        String temp = GPR0.getText();
+                        
+                        if(!"0000".equals(temp)){
+                            pc1=false;
+                            PC.setText(add);
+                     
+                            System.out.println(add);
+                        }
+                        
+                     
+                     }
+                     else if("01".equals(r)){
+                        
+                        String temp = GPR1.getText();
+                        
+                        if(!"0000".equals(temp)){
+                            pc1=false;
+                            PC.setText(add);
+                     
+                            System.out.println(add);
+                        }
+                        
+                     }
+                      else if("10".equals(r)){
+                       
+                        String temp = GPR2.getText();
+                     if(!"0000".equals(temp)){
+                            pc1=false;
+                            PC.setText(add);
+                     
+                            System.out.println(add);
+                        }
+                     }
+                      else if("11".equals(r)){
+                    
+                        String temp = GPR3.getText();
+                       if(!"0000".equals(temp)){
+                            pc1=false;
+                            PC.setText(add);
+                     
+                            System.out.println(add);
+                        }
+                     }    
+                      
+                      break;
+                      
+                      
+                    case "JCC":
+                         if(cc==1){
+                         PC.setText(add);
+                      System.out.println(add);
+                         }
+                      break;
+                    
+                    case "JMA":
+                        
+                        PC.setText(add);
+                        break;
+                        
+                        
+                    case "JSR":  
+                        String temp=PC.getText();
+                    
+                        int temp1=Integer.parseInt(temp,16);
+                        System.out.println(temp1);
+                      GPR3.setText (DecimaltoHexa( temp1)) ;
+                      PC.setText(add);
+                        break;
+                        
+                    case "RFS":
+                        
+                        String hex1 = Integer.toString(Integer.parseInt(address),16).toUpperCase();
+                        if (hex1.length() < 4)
+                        hex1 = "000".substring(hex1.length() - 1) + hex1;
+                        GPR0.setText(hex1);
+                        PC.setText(GPR3.getText());
+                        break;
+                        
+                        
+                    case "SOB":
+                     if ("00".equals(r)){
+                     
+                        String temp2 = GPR0.getText();
+                        
+                        int temp3=Integer.parseInt(temp2,16)-1;
+                       
+                      GPR0.setText (DecimaltoHexa( temp3)) ;
+                     
+                      if(temp3+1>0){
+                          PC.setText(add);
+                      }
+                     
+                        
+                     
+                     }
+                     else if("01".equals(r)){
+                        
+                       String temp2 = GPR1.getText();
+                        
+                        int temp3=Integer.parseInt(temp2,16)-1;
+                       
+                      GPR1.setText (DecimaltoHexa( temp3)) ;
+                     
+                      if(temp3+1>0){
+                          PC.setText(add);
+                      }
+                        
+                     }
+                      else if("10".equals(r)){
+                       String temp2 = GPR2.getText();
+                        
+                        int temp3=Integer.parseInt(temp2,16)-1;
+                       
+                      GPR2.setText (DecimaltoHexa( temp3)) ;
+                     
+                      if(temp3+1>0){
+                          PC.setText(add);
+                      }
+                     }
+                      else if("11".equals(r)){
+                    
+                       String temp2 = GPR3.getText();
+                        
+                        int temp3=Integer.parseInt(temp2,16)-1;
+                       
+                      GPR3.setText (DecimaltoHexa( temp3)) ;
+                     
+                      if(temp3+1>0){
+                          PC.setText(add);
+                      }
+                     }
+                     
+                      break;
+                
+                      
+                      case "JGE":
+                     if ("00".equals(r)){
+                     
+                        String temp2 = GPR0.getText();
+                        
+                        int temp3=Integer.parseInt(temp2,16)-1;
+                       
+                      
+                     
+                      if(temp3+1>=0){
+                          PC.setText(add);
+                      }
+                     
+                        
+                     
+                     }
+                     else if("01".equals(r)){
+                        
+                       String temp2 = GPR1.getText();
+                        
+                        int temp3=Integer.parseInt(temp2,16)-1;
+                       
+                    
+                     
+                      if(temp3+1>=0){
+                          PC.setText(add);
+                      }
+                        
+                     }
+                      else if("10".equals(r)){
+                       String temp2 = GPR2.getText();
+                        
+                        int temp3=Integer.parseInt(temp2,16)-1;
+                       
+                   
+                     
+                      if(temp3+1>=0){
+                          PC.setText(add);
+                      }
+                     }
+                      else if("11".equals(r)){
+                    
+                       String temp2 = GPR3.getText();
+                        
+                        int temp3=Integer.parseInt(temp2,16)-1;
+                       
+               
+                     
+                      if(temp3+1>=0){
+                          PC.setText(add);
+                      }
+                     }
+                     
+                      break;
+                    
+                    case "AMR":
+                
+                     if ("00".equals(r)){
+                           int temp2= Integer.parseInt(prog.get(add),16);
+                           int temp3 = Integer.parseInt(GPR0.getText(),16);
+                        GPR0.setText(DecimaltoHexa(temp2+temp3));
+                       
+                     }
+                     else if("01".equals(r)){
+                        
+                        int temp2= Integer.parseInt(prog.get(add),16);
+                           int temp3 = Integer.parseInt(GPR1.getText(),16);
+                        GPR1.setText(DecimaltoHexa(temp2+temp3));
+                     }
+                      else if("10".equals(r)){
+                       
+                       int temp2= Integer.parseInt(prog.get(add),16);
+                           int temp3 = Integer.parseInt(GPR2.getText(),16);
+                        GPR2.setText(DecimaltoHexa(temp2+temp3));
+                     }
+                      else if("11".equals(r)){
+                    
+                     int temp2= Integer.parseInt(prog.get(add),16);
+                           int temp3 = Integer.parseInt(GPR3.getText(),16);
+                        GPR3.setText(DecimaltoHexa(temp2+temp3));
+                     }
+                     break;      
+                    
+                      case "SMR":
+                
+                     if ("00".equals(r)){
+                           int temp2= Integer.parseInt(prog.get(add),16);
+                           int temp3 = Integer.parseInt(GPR0.getText(),16);
+                        GPR0.setText(DecimaltoHexa(temp3-temp2));
+                       
+                     }
+                     else if("01".equals(r)){
+                        
+                        int temp2= Integer.parseInt(prog.get(add),16);
+                           int temp3 = Integer.parseInt(GPR1.getText(),16);
+                        GPR1.setText(DecimaltoHexa(temp3-temp2));
+                     }
+                      else if("10".equals(r)){
+                       
+                       int temp2= Integer.parseInt(prog.get(add),16);
+                           int temp3 = Integer.parseInt(GPR2.getText(),16);
+                        GPR2.setText(DecimaltoHexa(temp3-temp2));
+                     }
+                      else if("11".equals(r)){
+                    
+                     int temp2= Integer.parseInt(prog.get(add),16);
+                           int temp3 = Integer.parseInt(GPR3.getText(),16);
+                        GPR3.setText(DecimaltoHexa(temp3-temp2));
+                     }
+                     break;  
+                     
+                     
+                    case "AIR":
+                         if ("00".equals(r)){
+                           int temp2= Integer.parseInt(address,2);
+                           int temp3 = Integer.parseInt(GPR0.getText(),16);
+                        GPR0.setText(DecimaltoHexa(temp3+temp2));
+                       
+                     }
+                     else if("01".equals(r)){
+                        
+                        int temp2= Integer.parseInt(address,2);
+                           int temp3 = Integer.parseInt(GPR1.getText(),16);
+                        GPR1.setText(DecimaltoHexa(temp3+temp2));
+                     }
+                      else if("10".equals(r)){
+                       
+                      int temp2= Integer.parseInt(address,2);
+                           int temp3 = Integer.parseInt(GPR2.getText(),16);
+                        GPR2.setText(DecimaltoHexa(temp3+temp2));
+                     }
+                      else if("11".equals(r)){
+                    
+                    int temp2= Integer.parseInt(address,2);
+                           int temp3 = Integer.parseInt(GPR3.getText(),16);
+                        GPR3.setText(DecimaltoHexa(temp3+temp2));
+                     }
+                
+                    
+                     break;  
+                     
+                     
+                     
+                         case "SIR":
+                         if ("00".equals(r)){
+                           int temp2= Integer.parseInt(address,2);
+                           int temp3 = Integer.parseInt(GPR0.getText(),16);
+                        GPR0.setText(DecimaltoHexa(temp3-temp2));
+                       
+                     }
+                     else if("01".equals(r)){
+                        
+                        int temp2= Integer.parseInt(address,2);
+                           int temp3 = Integer.parseInt(GPR1.getText(),16);
+                        GPR1.setText(DecimaltoHexa(temp3-temp2));
+                     }
+                      else if("10".equals(r)){
+                       
+                      int temp2= Integer.parseInt(address,2);
+                           int temp3 = Integer.parseInt(GPR2.getText(),16);
+                        GPR2.setText(DecimaltoHexa(temp3-temp2));
+                     }
+                      else if("11".equals(r)){
+                    
+                    int temp2= Integer.parseInt(address,2);
+                           int temp3 = Integer.parseInt(GPR3.getText(),16);
+                        GPR3.setText(DecimaltoHexa(temp3-temp2));
+                     }
+                
+                    
+                     break; 
+                     
+                     
+                     
+                    case "MLT":
+                            int temp2=0;
+                            int temp3=0;
+                            int high=0;
+                            int low=0;
+                            int prod=1;
+                     if (("00".equals(r) || "10".equals(r)) && ("00".equals(ix) || "10".equals(ix)) ){
+                         
+                         if ("00".equals(r)){
+                          temp2 = Integer.parseInt(GPR0.getText(),16);
+                          temp3 = Integer.parseInt(GPR2.getText(),16);
+                          prod = temp2*temp3;
+                          System.out.println(prod);
+                          high = prod >> 16;
+                          System.out.println(high);
+                          low= prod & 0xFFFF;
+                          System.out.println(low);
+                          GPR0.setText(DecimaltoHexa(high));
+                          GPR1.setText(DecimaltoHexa(low));
+                         
+                         }
+                         if ("10".equals(r)){
+                              temp2 = Integer.parseInt(GPR0.getText(),16);
+                          temp3 = Integer.parseInt(GPR2.getText(),16);
+                           prod = temp2*temp3;
+                          high = prod>>16;
+                          low= prod & 0xFFFF;
+                          GPR2.setText(DecimaltoHexa(high));
+                          GPR3.setText(DecimaltoHexa(low));
+                         }
+                       
+                    
+                       
+                     }
+                     break;
+                     
+                     
+                      case "DVD":
+                          int  q=1;
+                          int rem=0;
+                           
+                     if (("00".equals(r) || "10".equals(r)) && ("00".equals(ix) || "10".equals(ix)) ){
+                         
+                         if ("00".equals(r)){
+                          temp2 = Integer.parseInt(GPR0.getText(),16);
+                          temp3 = Integer.parseInt(GPR2.getText(),16);
+                          if(temp3==0){
+                              cc=3;
+                          }
+                           System.out.println(temp2);
+                           System.out.println(temp3);
+                       
+                          q=temp2/temp3;
+                          System.out.println(q);
+                          rem=temp2%temp3;
+                          System.out.println(r);
+                          GPR0.setText(DecimaltoHexa(q));
+                          GPR1.setText(DecimaltoHexa(rem));
+                         
+                         }
+                         if ("10".equals(r)){
+                              temp2 = Integer.parseInt(GPR0.getText(),16);
+                          temp3 = Integer.parseInt(GPR2.getText(),16);
+                           if(temp3==0){
+                              cc=3;
+                          }
+                           q=temp2/temp3;
+                          System.out.println(q);
+                          rem=temp2%temp3;
+                          System.out.println(r);
+                          GPR2.setText(DecimaltoHexa(q));
+                          GPR3.setText(DecimaltoHexa(rem ));
+                         }
+                       
+                    
+                       
+                     }
+                  
+                     
+                     break;      
+                     
+                     case "TRR":
+                         
+                         int rx=getRxyc(r);
+                         int ry=getRxyc(ix);                        
+                            if(rx==ry){
+                              cc=4;
+                          }
+       
+                         
+                        
+                     
+                     break;      
+                        
+                     
+                   
+                     case "AND":
+                        
+                     
+                         rx=getRxyc(r);
+                         ry=getRxyc(ix);
+                        setRxyc(r,DecimaltoHexa(rx&ry));
+                        
+                           
+                     
+                     break; 
+                     
+                     case "ORR":
+                        
+                           
+                    rx=getRxyc(r);
+                         ry=getRxyc(ix);
+                        setRxyc(r,DecimaltoHexa(rx | ry));
+                     break; 
+                     
+                      case "NOT":
+                        
+                           
+                     
+                         rx=getRxyc(r);
+                        
+                        setRxyc(r,DecimaltoHexa(~rx & 0xffff));
+                     
+                     break; 
+                     
+                     
+                 case "SRC":
+                        
+                           
+                     
+                       String R= bin.substring(6, 8);
+                       int AL = Integer.parseInt(bin.substring(8, 9),2);
+                       int LR = Integer.parseInt(bin.substring(9, 10),2);
+                       int count = Integer.parseInt(bin.substring(11, 16),2);
+                       int data = getRxyc(r);
+                       
+                        if (AL == 0) {
+                            if (LR == 0) {
+                                data = data >> count;
+                            }
+                            if (LR == 1) {
+                               data = data << count;
+                            }
+                        }
+                        if (AL == 1) {
+                            if (LR == 0) {
+                                if (data >= 0)
+                                    data = (data >>> count);
+                                else {
+                                    String x = Integer.toBinaryString(data >>> count);
+                                    x = x.replace("1111111111111111", "");
+                                    data = Integer.parseInt(x, 2);
+                                }
+                            }
+                            if (LR == 1) {
+                                data = data << count;
+                            }
+                        }
+                        setRxyc(R,DecimaltoHexa(data));
+                       
+                     break;     
+                     
+                case "RRC": 
+                   R= bin.substring(6, 8);
+                        AL = Integer.parseInt(bin.substring(8, 9),2);
+                      LR = Integer.parseInt(bin.substring(9, 10),2);
+                        count = Integer.parseInt(bin.substring(11, 16),2);
+                        data = getRxyc(r); 
+                    String first=null;
+                    String second =null;
+                    String bindata=Integer.toBinaryString(data);
+                        if(data>=0){
+                            bindata=bindata.replace("0000000000000000", "");
+                        }
+                      if(data<0){
+                          bindata=bindata.replaceAll("1111111111111111", "");
+                      }
+                         if (LR == 1) {
+                                first = bindata.substring(count, bindata.length());
+                                second = bindata.substring(0, count);
+                                bindata = first + second;
+                            }
+                            if (LR == 0) {
+                                first = bindata.substring(0, bindata.length() - count);
+                                second = bindata.substring(bindata.length() - count, bindata.length());
+                                 bindata = second + first;
+                            }
+                            System.out.println(first);
+                            System.out.println(second);
+                             System.out.println(bindata);
+                            data=Integer.parseInt(bindata,2);
+                            setRxyc(r,DecimaltoHexa(data));
+                        break;
                  default:
                      System.out.println("b");
                       break;
@@ -1748,6 +2328,45 @@ public void execute(String prc,String bin) {
  
  }
 
+public int getRxyc( String r){
+     switch (r){
+                             case "00":
+                               return Integer.parseInt(GPR0.getText(),16);
+                             
+                             case "01":
+                               return Integer.parseInt(GPR1.getText(),16);
+                            
+                             case "10":
+                               return Integer.parseInt(GPR2.getText(),16);
+                               
+                             case "11":
+                               return  Integer.parseInt(GPR3.getText(),16);
+                           
+                             default:
+                                 break;
+                         }
+     return 0;
+}
+
+public void setRxyc( String r, String data){
+     switch (r){
+                             case "00":
+                               GPR0.setText(data);
+                              break;
+                             case "01":
+                                GPR1.setText(data);
+                             break;
+                             case "10":
+                                GPR2.setText(data);
+                                break;
+                             case "11":
+                              GPR3.setText(data);
+                            break;
+                             default:
+                                 break;
+                         }
+    
+}
     
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         // TODO add your handling code here:
@@ -1767,17 +2386,20 @@ public void execute(String prc,String bin) {
 //                 programcounter++;
 //                 PC.setText(DecimaltoHexa(programcounter));
 //             }
-             
-             execute(PC.getText(),bin);// execute the instruction
-             prc++;
+              prc++;
              PC.setText(DecimaltoHexa(prc));
+             execute(PC.getText(),bin);// execute the instruction
+        
+           
+             
+             pc1=true;
              IR.setText(bin);
              String end=LastAdd(PC.getText());// Halt foreground color changed to red when reached end address
              if("ends".equals(end)){
              jLabel19.setForeground(Color.red);
-             PC.setText("0000");
+            // PC.setText("0000");
              
-              execute(PC.getText(),prog.get(PC.getText()));
+             //  execute(PC.getText(),prog.get(PC.getText()));
              
              
              }
