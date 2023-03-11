@@ -70,9 +70,14 @@ public class Simulator extends javax.swing.JFrame {
     String ixr1="0";//indirect register
     String ixr2="0";//indirect register
     String ixr3="0";//indirect register
+    
     boolean pc1=true;
     boolean negative=false;
     int cc=0;
+    int cc1=0;
+    int cc2=0;
+    int cc3=0;
+    int cc4=0;
       String hex;
       
       public static final HashMap<String, String> OPCODE = new HashMap<String, String>();//opcodes mappes to their binary equivalent
@@ -891,29 +896,32 @@ public class Simulator extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel21)
-                    .addComponent(jLabel22)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel23)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel22)
+                            .addComponent(jLabel23))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4)
+                    .addComponent(jScrollPane6))
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(8, 8, 8)
                 .addComponent(jLabel21)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel22)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jButton17.setText("Load Program 1");
@@ -957,10 +965,14 @@ public class Simulator extends javax.swing.JFrame {
                             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(74, 74, 74)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 18, Short.MAX_VALUE)))
                 .addGap(24, 24, 24))
         );
         layout.setVerticalGroup(
@@ -980,7 +992,7 @@ public class Simulator extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1662,7 +1674,7 @@ public class Simulator extends javax.swing.JFrame {
                    
                   
              
-      
+      try{
          while (true){ //iterate over memory
              int  prc=Integer.parseInt(PC.getText(),16);
              String bin =hexToBinary(prog.get(PC.getText())); //extarcts binary from the vlaue staored at i address
@@ -1711,11 +1723,12 @@ public class Simulator extends javax.swing.JFrame {
 
 
 
-         }
+         }}catch(NullPointerException e)
         
-            //       jLabel19.setForeground(Color.red); //when halted the font color changes
+         {     
+             jLabel19.setForeground(Color.red); //when halted the font color changes
          
-        
+         }
         
         
     }//GEN-LAST:event_jButton16ActionPerformed
@@ -2422,6 +2435,7 @@ public void AIR(String opcode,String r, String ix,String i, String address,Strin
                            int temp2= Integer.parseInt(address,2);
                            int temp3 = Integer.parseInt(GPR0.getText(),16);
                         GPR0.setText(DecimaltoHexa(temp3+temp2));
+                      
                        
                      }
                      else if("01".equals(r)){
@@ -2484,6 +2498,16 @@ public void MLT(String opcode,String r, String ix,String i, String address,Strin
                           temp2 = Integer.parseInt(GPR0.getText(),16);
                           temp3 = Integer.parseInt(GPR2.getText(),16);
                           prod = temp2*temp3;
+                          if (prod>Integer.MAX_VALUE){
+                              cc=1;
+                              cc1=1;
+                              keyboard.append("cc(1)=1");
+                          }
+                          else{
+                              cc1=0;
+                              keyboard.append("cc(1)=0");
+                              cc=0;
+                          }
                           System.out.println(prod);
                           high = prod >> 16;
                           System.out.println(high);
@@ -2497,6 +2521,13 @@ public void MLT(String opcode,String r, String ix,String i, String address,Strin
                               temp2 = Integer.parseInt(GPR0.getText(),16);
                           temp3 = Integer.parseInt(GPR2.getText(),16);
                            prod = temp2*temp3;
+                           if (prod>Integer.MAX_VALUE){
+                              cc=1;
+                              cc1=1;
+                          }
+                          else{
+                              cc1=0;
+                          }
                           high = prod>>16;
                           low= prod & 0xFFFF;
                           GPR2.setText(DecimaltoHexa(high));
@@ -2523,6 +2554,13 @@ public void DVD(String opcode,String r, String ix,String i, String address,Strin
                           temp3 = Integer.parseInt(GPR2.getText(),16);
                           if(temp3==0){
                               cc=3;
+                              cc3=1; 
+                              printer.append("cc(3)=1");
+                          }
+                          else{
+                              cc3=0;
+                              printer.append("cc(3)=0");
+                              cc=0;
                           }
                            System.out.println(temp2);
                            System.out.println(temp3);
@@ -2540,6 +2578,11 @@ public void DVD(String opcode,String r, String ix,String i, String address,Strin
                           temp3 = Integer.parseInt(GPR2.getText(),16);
                            if(temp3==0){
                               cc=3;
+                              cc3=1; 
+                              printer.append("cc(3)=1");
+                          }
+                          else{
+                              cc3=0;
                           }
                            q=temp2/temp3;
                           System.out.println(q);
@@ -2559,10 +2602,13 @@ public void TRR(String opcode,String r, String ix,String i, String address,Strin
                          int ry=getRxyc(ix);                        
                             if(rx==ry){
                               cc=4;
+                              cc4=1;
                               printer.append("cc(4)=1 \n");
                           }
                             else{
                                 printer.append("cc(4)=0 \n");
+                                cc4=0;
+                                cc=0;
                             }
                           
 }
@@ -2713,11 +2759,10 @@ public void setRxyc( String r, String data){
              
            
              int  prc=Integer.parseInt(PC.getText(),16); //extract program counter value
-            
+            try{
               String bin =hexToBinary(prog.get(PC.getText())); // extracts binary form instruction at program counter
          //    String bin =instruct.get(Integer.toString(prc));
-            
-             System.out.println(bin);
+         System.out.println(bin);
 //             if (prc>=programcounter){
 //                 programcounter++;
 //                 PC.setText(DecimaltoHexa(programcounter));
@@ -2739,6 +2784,10 @@ public void setRxyc( String r, String data){
              
              
              }
+            } catch (NullPointerException e){
+                 jLabel19.setForeground(Color.red);
+            }
+             
              
              
              
@@ -2765,7 +2814,7 @@ public void setRxyc( String r, String data){
         // TODO add your handling code here:
         //load program1
        // keyboard.setText("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,14");
-       keyboard.setText("5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,21");
+     
           String S= keyboard.getText();
           
         int counter =1;
