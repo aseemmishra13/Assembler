@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.util.Scanner;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 /**
  *
@@ -28,7 +30,13 @@ public class Simulator extends javax.swing.JFrame {
          
         
     }
-   HashMap<String, String> prog = new HashMap<String, String>(); //create a memory to store value and its address
+    int MAX_ENTRIES=16;
+    
+   ConcurrentHashMap<String, String> prog = new ConcurrentHashMap<String, String>(); //create a memory to store value and its address
+   LinkedHashMap<String, String> Cache = new LinkedHashMap<String, String>(MAX_ENTRIES + 1, .75F, false) {
+         protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {
+            return size() > MAX_ENTRIES;}
+         };
   
    HashMap<String, String> instruct = new HashMap<String, String>();
  
@@ -96,6 +104,9 @@ public class Simulator extends javax.swing.JFrame {
           
                 OPCODE.put("011001", "SRC");
                 OPCODE.put("011010", "RRC");
+                OPCODE.put("110001", "IN");
+                OPCODE.put("110010", "OUT");
+                OPCODE.put("110011", "CHK");
                 
                 System.out.println(OPCODE);
 	}
@@ -184,6 +195,18 @@ public class Simulator extends javax.swing.JFrame {
         jButton16 = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        printer = new javax.swing.JTextArea();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        keyboard = new javax.swing.JTextArea();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        cache = new javax.swing.JTextArea();
+        jPanel6 = new javax.swing.JPanel();
+        jButton17 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 255, 255));
@@ -749,7 +772,7 @@ public class Simulator extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(I, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         jButton11.setText("Store");
@@ -760,6 +783,11 @@ public class Simulator extends javax.swing.JFrame {
         });
 
         jButton12.setText("St+");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
 
         jButton13.setText("Load");
         jButton13.addActionListener(new java.awt.event.ActionListener() {
@@ -837,39 +865,128 @@ public class Simulator extends javax.swing.JFrame {
                 .addContainerGap(38, Short.MAX_VALUE))
         );
 
+        jLabel21.setText("Console Printer");
+
+        jLabel22.setText("Console Keyboard");
+
+        jLabel23.setText("Cache");
+
+        printer.setColumns(20);
+        printer.setRows(5);
+        jScrollPane4.setViewportView(printer);
+
+        keyboard.setColumns(20);
+        keyboard.setRows(5);
+        jScrollPane5.setViewportView(keyboard);
+
+        cache.setColumns(20);
+        cache.setRows(5);
+        jScrollPane6.setViewportView(cache);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel21)
+                    .addComponent(jLabel22)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(52, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jButton17.setText("Load Program 1");
+        jButton17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton17ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jButton17)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jButton17)
+                .addContainerGap(57, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(GPR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(IXR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(204, 204, 204)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(GPR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(IXR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(74, 74, 74)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(GPR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(IXR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(GPR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(IXR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
+                        .addGap(39, 39, 39)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(73, 73, 73))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(54, 54, 54))))
         );
 
         pack();
@@ -1291,10 +1408,10 @@ public class Simulator extends javax.swing.JFrame {
     }
      String DecimaltoHexa(int dec){
        //convert Decimal to hexa decimal
-       
-         hex = Integer.toString(dec,16).toUpperCase();
-        if (hex.length() < 4)
-    hex = "000".substring(hex.length() - 1) + hex;
+        hex = String.format("%04x", dec & 0xFFFF).toUpperCase();
+//         hex = Integer.toString(dec,16).toUpperCase();
+//        if (hex.length() < 4)
+//    hex = "000".substring(hex.length() - 1) + hex;
         return hex;
         
     }
@@ -1497,6 +1614,8 @@ public class Simulator extends javax.swing.JFrame {
            
        }else{
          prog.put(tokens[0],tokens[1]);   //sets value and their address in memory
+         updateCache(tokens[0],tokens[1]);
+         displayCache();
          }
          
          
@@ -1528,6 +1647,9 @@ public class Simulator extends javax.swing.JFrame {
         //store
         prog.put(MAR.getText(),MBR.getText());//sets MAR and MBR in memory
         System.out.println(prog);
+        updateCache(MAR.getText(),MBR.getText());
+        displayCache();
+        printer.append(MBR.getText()+"Stored at Address :"+MAR.getText()+"\n");
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
@@ -1537,14 +1659,15 @@ public class Simulator extends javax.swing.JFrame {
          sTringToHexa();
           
                    
-                  int  prc=Integer.parseInt(PC.getText(),16);
+                  
              
       
-         for (String i : prog.keySet()){ //iterate over memory
+         while (true){ //iterate over memory
+             int  prc=Integer.parseInt(PC.getText(),16);
              String bin =hexToBinary(prog.get(PC.getText())); //extarcts binary from the vlaue staored at i address
-             programcounter++;
-             System.out.println("i" + hexToBinary(i)+" " +"value"+hexToBinary(prog.get(i))+ programcounter); 
-             System.out.println(bin);
+           //  programcounter++;
+            System.out.println("i" + (prc)+" " +"value"+(bin)); 
+             //System.out.println(bin);
              prc++;
              PC.setText(DecimaltoHexa(prc));
          
@@ -1589,7 +1712,7 @@ public class Simulator extends javax.swing.JFrame {
 
          }
         
-                   jLabel19.setForeground(Color.red); //when halted the font color changes
+            //       jLabel19.setForeground(Color.red); //when halted the font color changes
          
         
         
@@ -1626,8 +1749,223 @@ public void execute(String prc,String bin) {
          //instruction execution
      switch (instr){
                  case "LDR":
+                   LDR(opcode,r, ix,i,address, add) ;
                    
-                     if ("00".equals(r)){
+                     
+                     break;
+                 case "LDA":
+                     LDA(opcode,r, ix,i,address, add) ;
+                      break;
+                case "HLT":
+                     System.out.println("HLT");
+                      Halt="end";
+                      break;
+                  case "STR":
+                      STR(opcode,r, ix,i,address, add) ;
+                     
+                      break;
+                      
+                  case "LDX":
+                      LDX(opcode,r, ix,i,address, add) ;
+                     
+                     break;
+                      
+                case "STX":
+                    STX(opcode,r, ix,i,address, add) ;
+                                          
+                      break;
+                      
+                case "JZ":
+                     JZ(opcode,r,ix,i,address,add);
+                     
+                      break;
+                
+                      
+                  case "JNE":
+                      JNE(opcode,r,ix,i,address,add);
+                      
+                      break;
+                      
+                      
+                    case "JCC":
+                        JCC(opcode,r,ix,i,address,add);
+                         
+                      break;
+                    
+                    case "JMA":
+                        JMA(opcode,r,ix,i,address,add);
+                       
+                        break;
+                        
+                        
+                    case "JSR":  
+                        JSR(opcode,r,ix,i,address,add);
+                        
+                        break;
+                        
+                    case "RFS":
+                        RFS(opcode,r,ix,i,address,add);
+
+                        break;
+                        
+                        
+                    case "SOB":
+                        SOB(opcode,r,ix,i,address,add);
+                     
+                      break;
+                
+                      
+                      case "JGE":
+                          JGE(opcode,r,ix,i,address,add);
+                     
+                      break;
+                    
+                    case "AMR":
+                AMR(opcode,r,ix,i,address,add);
+                     break;      
+                    
+                      case "SMR":
+                SMR(opcode,r,ix,i,address,add);
+                     break;  
+                     
+                     
+                    case "AIR":
+                        AIR(opcode,r,ix,i,address,add);
+                        
+                    
+                     break;  
+                     
+                     
+                     
+                         case "SIR":
+                             SIR(opcode,r,ix,i,address,add);
+                        
+                     break; 
+                     
+                     
+                     
+                    case "MLT":
+                        MLT(opcode,r,ix,i,address,add);
+                            
+                     break;
+                     
+                     
+                      case "DVD":
+                           DVD(opcode,r,ix,i,address,add);
+                          
+                     
+                     break;      
+                     
+                     case "TRR":
+                         TRR(opcode,r,ix,i,address,add);
+                         
+                        
+                     
+                     break;      
+                        
+                     
+                   
+                     case "AND":
+                        
+                            AND(opcode,r,ix,i,address,add);
+                      
+                     break; 
+                     
+                     case "ORR":
+                        ORR(opcode,r,ix,i,address,add);
+                           
+                    
+                     break; 
+                     
+                      case "NOT":
+                        NOT(opcode,r,ix,i,address,add);
+                           
+                  
+                     break; 
+                     
+                     
+                 case "SRC":
+                        
+                        SRC(bin,r);   
+                     
+                       
+                     break;     
+                     
+                case "RRC": 
+                     RRC(bin,r);   
+                   
+                        break;
+                        
+                case "IN":
+                    IN(r,address);
+                    break;
+                    
+                case "OUT":
+                    OUT(r,address);
+                    break;    
+                 default:
+                     System.out.println("b");
+                      break;
+                     
+    
+    
+        
+    }
+     }
+ 
+ }
+public void OUT(String r,String address){
+    if("00001".equals(address)){
+        int x = getRxyc(r);
+         if ("00".equals(r)){
+                     
+                       printer.append("\n"+DecimaltoHexa(x));
+                      
+                     }
+                     else if("01".equals(r)){
+                        
+                         printer.append(DecimaltoHexa(x));
+                       
+                     }
+                      else if("10".equals(r)){
+                       
+                        printer.append(DecimaltoHexa(x));
+                    
+                     }
+                      else if("11".equals(r)){
+                    
+                       printer.append(DecimaltoHexa(x));
+                      
+                     }
+    }
+}
+public void IN(String r,String address){
+    if("00000".equals(address)){
+        String S = keyboard.getText();
+         if ("00".equals(r)){
+                     
+                        GPR0.setText(S);
+                      
+                     }
+                     else if("01".equals(r)){
+                        
+                        GPR1.setText(S);
+                       
+                     }
+                      else if("10".equals(r)){
+                       
+                        GPR2.setText(S);
+                    
+                     }
+                      else if("11".equals(r)){
+                    
+                        GPR3.setText(S);
+                      
+                     }
+    }
+}
+public void LDR(String opcode,String r, String ix,String i, String address,String add){
+    if ("00".equals(r)){
                      
                         GPR0.setText(prog.get(add));
                         MAR.setText(add);
@@ -1651,8 +1989,10 @@ public void execute(String prc,String bin) {
                         MAR.setText(add);
                         MBR.setText(prog.get(add));
                      }
-                     break;
-                 case "LDA":
+}
+
+public void LDA(String opcode,String r, String ix,String i, String address,String add){
+    
                      if ("00".equals(r)){
                      
                         GPR0.setText(add);
@@ -1677,13 +2017,12 @@ public void execute(String prc,String bin) {
                         MAR.setText(add);
                         MBR.setText(prog.get(add));
                      }
-                      break;
-                case "HLT":
-                     System.out.println("HLT");
-                      Halt="end";
-                      break;
-                  case "STR":
-                     if ("00".equals(r)){
+}
+
+
+public void STR(String opcode,String r, String ix,String i, String address,String add){
+
+if ("00".equals(r)){
                      
                         String temp = GPR0.getText();
                         prog.put(add,temp);
@@ -1713,10 +2052,10 @@ public void execute(String prc,String bin) {
                         MBR.setText(prog.get(add));
                      }
                      
-                      break;
-                      
-                  case "LDX":
-                     if ("01".equals(ix)){
+
+}
+public void LDX(String opcode,String r, String ix,String i, String address,String add){
+     if ("01".equals(ix)){
                          System.out.println("hello");
                         IXR1.setText(prog.get(add));
                         MAR.setText(add);
@@ -1734,10 +2073,9 @@ public void execute(String prc,String bin) {
                         MAR.setText(add);
                         MBR.setText(prog.get(add));
                      }
-                     break;
-                      
-                case "STX":
-                     if("01".equals(ix)){
+}
+public void STX(String opcode,String r, String ix,String i, String address,String add){
+   if("01".equals(ix)){
                         
                         String temp = IXR1.getText();
                         prog.put(add,temp);
@@ -1758,11 +2096,11 @@ public void execute(String prc,String bin) {
                         MAR.setText(add);
                         MBR.setText(prog.get(add));
                      }
-                     
-                      break;
-                      
-                case "JZ":
-                     if ("00".equals(r)){
+ 
+}
+
+public void JZ(String opcode,String r, String ix,String i, String address,String add){
+     if ("00".equals(r)){
                      
                         String temp = GPR0.getText();
                         
@@ -1807,12 +2145,10 @@ public void execute(String prc,String bin) {
                             System.out.println(add);
                         }
                      }
-                     
-                      break;
-                
-                      
-                  case "JNE":
-                     if ("00".equals(r)){
+                    
+}
+public void JNE(String opcode,String r, String ix,String i, String address,String add){
+    if ("00".equals(r)){
                      
                         String temp = GPR0.getText();
                         
@@ -1857,44 +2193,37 @@ public void execute(String prc,String bin) {
                             System.out.println(add);
                         }
                      }    
-                      
-                      break;
-                      
-                      
-                    case "JCC":
-                         if(cc==1){
+                     
+}
+public void JCC(String opcode,String r, String ix,String i, String address,String add){
+    if(cc!=0){
                          PC.setText(add);
                       System.out.println(add);
                          }
-                      break;
-                    
-                    case "JMA":
-                        
-                        PC.setText(add);
-                        break;
-                        
-                        
-                    case "JSR":  
-                        String temp=PC.getText();
+}
+public void JMA(String opcode,String r, String ix,String i, String address,String add){
+     PC.setText(add);
+}
+public void JSR(String opcode,String r, String ix,String i, String address,String add){
+    String temp=PC.getText();
                     
                         int temp1=Integer.parseInt(temp,16);
                         System.out.println(temp1);
                       GPR3.setText (DecimaltoHexa( temp1)) ;
                       PC.setText(add);
-                        break;
+}
+public void RFS(String opcode,String r, String ix,String i, String address,String add){
+    //                        String hex1 = Integer.toString(Integer.parseInt(address),16).toUpperCase();
+//                        if (hex1.length() < 4)
+//                        hex1 = "000".substring(hex1.length() - 1) + hex1;
                         
-                    case "RFS":
                         
-                        String hex1 = Integer.toString(Integer.parseInt(address),16).toUpperCase();
-                        if (hex1.length() < 4)
-                        hex1 = "000".substring(hex1.length() - 1) + hex1;
-                        GPR0.setText(hex1);
+                        GPR0.setText(add);
                         PC.setText(GPR3.getText());
-                        break;
-                        
-                        
-                    case "SOB":
-                     if ("00".equals(r)){
+    
+}
+public void SOB(String opcode,String r, String ix,String i, String address,String add){
+   if ("00".equals(r)){
                      
                         String temp2 = GPR0.getText();
                         
@@ -1902,7 +2231,7 @@ public void execute(String prc,String bin) {
                        
                       GPR0.setText (DecimaltoHexa( temp3)) ;
                      
-                      if(temp3+1>0){
+                      if(temp3>0){
                           PC.setText(add);
                       }
                      
@@ -1917,7 +2246,7 @@ public void execute(String prc,String bin) {
                        
                       GPR1.setText (DecimaltoHexa( temp3)) ;
                      
-                      if(temp3+1>0){
+                      if(temp3>0){
                           PC.setText(add);
                       }
                         
@@ -1929,7 +2258,7 @@ public void execute(String prc,String bin) {
                        
                       GPR2.setText (DecimaltoHexa( temp3)) ;
                      
-                      if(temp3+1>0){
+                      if(temp3>0){
                           PC.setText(add);
                       }
                      }
@@ -1941,16 +2270,14 @@ public void execute(String prc,String bin) {
                        
                       GPR3.setText (DecimaltoHexa( temp3)) ;
                      
-                      if(temp3+1>0){
+                      if(temp3>0){
                           PC.setText(add);
                       }
                      }
-                     
-                      break;
-                
                       
-                      case "JGE":
-                     if ("00".equals(r)){
+}
+public void JGE(String opcode,String r, String ix,String i, String address,String add){
+     if ("00".equals(r)){
                      
                         String temp2 = GPR0.getText();
                         
@@ -2001,12 +2328,10 @@ public void execute(String prc,String bin) {
                           PC.setText(add);
                       }
                      }
-                     
-                      break;
                     
-                    case "AMR":
-                
-                     if ("00".equals(r)){
+}
+public void AMR(String opcode,String r, String ix,String i, String address,String add){
+    if ("00".equals(r)){
                            int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR0.getText(),16);
                         GPR0.setText(DecimaltoHexa(temp2+temp3));
@@ -2030,11 +2355,10 @@ public void execute(String prc,String bin) {
                            int temp3 = Integer.parseInt(GPR3.getText(),16);
                         GPR3.setText(DecimaltoHexa(temp2+temp3));
                      }
-                     break;      
-                    
-                      case "SMR":
-                
-                     if ("00".equals(r)){
+                     
+}
+public void SMR(String opcode,String r, String ix,String i, String address,String add){
+  if ("00".equals(r)){
                            int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR0.getText(),16);
                         GPR0.setText(DecimaltoHexa(temp3-temp2));
@@ -2058,11 +2382,10 @@ public void execute(String prc,String bin) {
                            int temp3 = Integer.parseInt(GPR3.getText(),16);
                         GPR3.setText(DecimaltoHexa(temp3-temp2));
                      }
-                     break;  
-                     
-                     
-                    case "AIR":
-                         if ("00".equals(r)){
+                       
+}
+public void AIR(String opcode,String r, String ix,String i, String address,String add){
+  if ("00".equals(r)){
                            int temp2= Integer.parseInt(address,2);
                            int temp3 = Integer.parseInt(GPR0.getText(),16);
                         GPR0.setText(DecimaltoHexa(temp3+temp2));
@@ -2086,14 +2409,10 @@ public void execute(String prc,String bin) {
                            int temp3 = Integer.parseInt(GPR3.getText(),16);
                         GPR3.setText(DecimaltoHexa(temp3+temp2));
                      }
-                
-                    
-                     break;  
-                     
-                     
-                     
-                         case "SIR":
-                         if ("00".equals(r)){
+                   
+}
+public void SIR(String opcode,String r, String ix,String i, String address,String add){
+     if ("00".equals(r)){
                            int temp2= Integer.parseInt(address,2);
                            int temp3 = Integer.parseInt(GPR0.getText(),16);
                         GPR0.setText(DecimaltoHexa(temp3-temp2));
@@ -2119,12 +2438,9 @@ public void execute(String prc,String bin) {
                      }
                 
                     
-                     break; 
-                     
-                     
-                     
-                    case "MLT":
-                            int temp2=0;
+}
+public void MLT(String opcode,String r, String ix,String i, String address,String add){
+  int temp2=0;
                             int temp3=0;
                             int high=0;
                             int low=0;
@@ -2156,11 +2472,14 @@ public void execute(String prc,String bin) {
                        
                     
                        
-                     }
-                     break;
-                     
-                     
-                      case "DVD":
+                     }  
+}
+public void DVD(String opcode,String r, String ix,String i, String address,String add){
+     int temp2=0;
+                            int temp3=0;
+                            int high=0;
+                            int low=0;
+                            int prod=1;
                           int  q=1;
                           int rem=0;
                            
@@ -2201,59 +2520,38 @@ public void execute(String prc,String bin) {
                        
                      }
                   
-                     
-                     break;      
-                     
-                     case "TRR":
-                         
-                         int rx=getRxyc(r);
+}
+public void TRR(String opcode,String r, String ix,String i, String address,String add){
+   int rx=getRxyc(r);
                          int ry=getRxyc(ix);                        
                             if(rx==ry){
                               cc=4;
+                              printer.append("cc(4)=1 \n");
                           }
-       
-                         
-                        
-                     
-                     break;      
-                        
-                     
-                   
-                     case "AND":
-                        
-                     
-                         rx=getRxyc(r);
-                         ry=getRxyc(ix);
+                            else{
+                                printer.append("cc(4)=0 \n");
+                            }
+                          
+}
+public void AND(String opcode,String r, String ix,String i, String address,String add){
+                        int rx=getRxyc(r);
+                         int ry=getRxyc(ix);     
+                       
                         setRxyc(r,DecimaltoHexa(rx&ry));
+}
+public void ORR(String opcode,String r, String ix,String i, String address,String add){
                         
-                           
-                     
-                     break; 
-                     
-                     case "ORR":
-                        
-                           
-                    rx=getRxyc(r);
-                         ry=getRxyc(ix);
+                        int rx=getRxyc(r);
+                        int ry=getRxyc(ix);
                         setRxyc(r,DecimaltoHexa(rx | ry));
-                     break; 
-                     
-                      case "NOT":
-                        
-                           
-                     
-                         rx=getRxyc(r);
+}
+public void NOT(String opcode,String r, String ix,String i, String address,String add){
+                        int rx=getRxyc(r);
                         
                         setRxyc(r,DecimaltoHexa(~rx & 0xffff));
-                     
-                     break; 
-                     
-                     
-                 case "SRC":
-                        
-                           
-                     
-                       String R= bin.substring(6, 8);
+}
+public void SRC(String bin, String r){
+    String R= bin.substring(6, 8);
                        int AL = Integer.parseInt(bin.substring(8, 9),2);
                        int LR = Integer.parseInt(bin.substring(9, 10),2);
                        int count = Integer.parseInt(bin.substring(11, 16),2);
@@ -2283,14 +2581,14 @@ public void execute(String prc,String bin) {
                         }
                         setRxyc(R,DecimaltoHexa(data));
                        
-                     break;     
-                     
-                case "RRC": 
-                   R= bin.substring(6, 8);
-                        AL = Integer.parseInt(bin.substring(8, 9),2);
-                      LR = Integer.parseInt(bin.substring(9, 10),2);
-                        count = Integer.parseInt(bin.substring(11, 16),2);
-                        data = getRxyc(r); 
+    
+}
+public void RRC(String bin, String r){
+    String R= bin.substring(6, 8);
+                       int AL = Integer.parseInt(bin.substring(8, 9),2);
+                    int  LR = Integer.parseInt(bin.substring(9, 10),2);
+                      int  count = Integer.parseInt(bin.substring(11, 16),2);
+                     int   data = getRxyc(r); 
                     String first=null;
                     String second =null;
                     String bindata=Integer.toBinaryString(data);
@@ -2315,19 +2613,7 @@ public void execute(String prc,String bin) {
                              System.out.println(bindata);
                             data=Integer.parseInt(bindata,2);
                             setRxyc(r,DecimaltoHexa(data));
-                        break;
-                 default:
-                     System.out.println("b");
-                      break;
-                     
-    
-    
-        
-    }
-     }
- 
- }
-
+}
 public int getRxyc( String r){
      switch (r){
                              case "00":
@@ -2367,7 +2653,24 @@ public void setRxyc( String r, String data){
                          }
     
 }
-    
+ public void updateCache(String address, String data){
+               Cache.put(address, data);
+              
+                
+               
+               
+              
+    }
+ 
+ 
+ public void displayCache(){
+     System.out.print(Cache);
+     cache.setText("");
+     Set <String> keys = Cache.keySet();
+     for (String key :keys){
+         cache.append("Tag: " + key + " Data: " + Cache.get(key)+ "\n");
+     }
+ }
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         // TODO add your handling code here:
         //Single Step
@@ -2415,6 +2718,77 @@ public void setRxyc( String r, String data){
         
         
     }//GEN-LAST:event_jButton15ActionPerformed
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        // TODO add your handling code here:
+    
+      
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+        // TODO add your handling code here:
+        //load program1
+       // keyboard.setText("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,14");
+          String S= keyboard.getText();
+          
+        int counter =1;
+        String[] arrSplit = S.split(",");
+     int[] numbers = new int[21];
+    
+     PC.setText("0017");
+        for (int i=0; i < arrSplit.length; i++)
+            
+    {
+      System.out.println(arrSplit[i]);
+      numbers[i]=Integer.parseInt(arrSplit[i]);
+      prog.put(DecimaltoHexa(counter), DecimaltoHexa(Integer.parseInt(arrSplit[i])));
+      counter++;
+      printer.append(arrSplit[i]+"\n");
+    }
+        int searchNumber=numbers[20];
+        System.out.println(searchNumber);
+        System.out.println(prog);
+        int closestNumber = numbers[0];
+        for (int i = 1; i < 20; i++) {
+            if (Math.abs(numbers[i] - searchNumber) < Math.abs(closestNumber - searchNumber)) {
+                closestNumber = numbers[i];
+            }
+             System.out.println(closestNumber);
+        }
+        GPR0.setText(DecimaltoHexa(closestNumber));
+        printer.append("Closest Number:" +closestNumber);
+         String [] tokens;
+     try{
+            
+        File myObj = new File("IPL.txt"); //opens file "IPL.txt"
+      Scanner myReader = new Scanner(myObj);
+        
+      while (myReader.hasNextLine()) {
+        String data = myReader.nextLine();
+         tokens = data.split(" ");
+         if(prog.size() == 2048){           // sets memory to 2048 words
+             JOptionPane.showMessageDialog(null,"Word memory reached");
+           
+       }else{
+         prog.put(tokens[0],tokens[1]);   //sets value and their address in memory
+         updateCache(tokens[0],tokens[1]);
+         displayCache();
+         }
+         
+         
+  
+ 
+ 
+    
+      }
+   
+       System.out.println(prog);
+      myReader.close();
+    } catch (FileNotFoundException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+    }//GEN-LAST:event_jButton17ActionPerformed
     
     String LastAdd(String addr){
         int count=0;
@@ -2483,6 +2857,7 @@ public void setRxyc( String r, String data){
     private javax.swing.JTextField MFR;
     private javax.swing.JTextField PC;
     private javax.swing.JTextField Priviledged;
+    private javax.swing.JTextArea cache;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -2491,6 +2866,7 @@ public void setRxyc( String r, String data){
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
+    private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -2512,6 +2888,9 @@ public void setRxyc( String r, String data){
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -2523,6 +2902,11 @@ public void setRxyc( String r, String data){
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton10;
     private javax.swing.JToggleButton jToggleButton11;
@@ -2539,5 +2923,7 @@ public void setRxyc( String r, String data){
     private javax.swing.JToggleButton jToggleButton7;
     private javax.swing.JToggleButton jToggleButton8;
     private javax.swing.JToggleButton jToggleButton9;
+    private javax.swing.JTextArea keyboard;
+    private javax.swing.JTextArea printer;
     // End of variables declaration//GEN-END:variables
 }
