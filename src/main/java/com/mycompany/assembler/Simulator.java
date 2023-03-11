@@ -71,6 +71,7 @@ public class Simulator extends javax.swing.JFrame {
     String ixr2="0";//indirect register
     String ixr3="0";//indirect register
     boolean pc1=true;
+    boolean negative=false;
     int cc=0;
       String hex;
       
@@ -1919,22 +1920,22 @@ public void OUT(String r,String address){
         int x = getRxyc(r);
          if ("00".equals(r)){
                      
-                       printer.append("\n"+DecimaltoHexa(x));
+                       printer.append("\nHexadecimal: "+DecimaltoHexa(x)+ " Decimal :" +x);
                       
                      }
                      else if("01".equals(r)){
                         
-                         printer.append(DecimaltoHexa(x));
+                        printer.append("\nHexadecimal: "+DecimaltoHexa(x)+ " Decimal :" +x);
                        
                      }
                       else if("10".equals(r)){
                        
-                        printer.append(DecimaltoHexa(x));
+                        printer.append("\nHexadecimal: "+DecimaltoHexa(x)+ " Decimal :" +x);
                     
                      }
                       else if("11".equals(r)){
                     
-                       printer.append(DecimaltoHexa(x));
+                       printer.append("\nHexadecimal: "+DecimaltoHexa(x)+ " Decimal :" +x);
                       
                      }
     }
@@ -2283,7 +2284,9 @@ public void JGE(String opcode,String r, String ix,String i, String address,Strin
                         
                         int temp3=Integer.parseInt(temp2,16)-1;
                        
-                      
+                      if (negative==true){
+                           temp3 = ((Integer.parseInt(Integer.toString(Integer.parseInt(temp2, 16), 2).replace('0', 'X').replace('1', '0').replace('X', '1'), 2) + 1) * -1)-1;
+                      }
                      
                       if(temp3+1>=0){
                           PC.setText(add);
@@ -2298,7 +2301,9 @@ public void JGE(String opcode,String r, String ix,String i, String address,Strin
                         
                         int temp3=Integer.parseInt(temp2,16)-1;
                        
-                    
+                    if (negative==true){
+                           temp3 = ((Integer.parseInt(Integer.toString(Integer.parseInt(temp2, 16), 2).replace('0', 'X').replace('1', '0').replace('X', '1'), 2) + 1) * -1)-1;
+                      }
                      
                       if(temp3+1>=0){
                           PC.setText(add);
@@ -2310,7 +2315,9 @@ public void JGE(String opcode,String r, String ix,String i, String address,Strin
                         
                         int temp3=Integer.parseInt(temp2,16)-1;
                        
-                   
+                   if (negative==true){
+                           temp3 = ((Integer.parseInt(Integer.toString(Integer.parseInt(temp2, 16), 2).replace('0', 'X').replace('1', '0').replace('X', '1'), 2) + 1) * -1)-1;
+                      }
                      
                       if(temp3+1>=0){
                           PC.setText(add);
@@ -2322,7 +2329,9 @@ public void JGE(String opcode,String r, String ix,String i, String address,Strin
                         
                         int temp3=Integer.parseInt(temp2,16)-1;
                        
-               
+               if (negative==true){
+                           temp3 = ((Integer.parseInt(Integer.toString(Integer.parseInt(temp2, 16), 2).replace('0', 'X').replace('1', '0').replace('X', '1'), 2) + 1) * -1)-1;
+                      }
                      
                       if(temp3+1>=0){
                           PC.setText(add);
@@ -2362,6 +2371,12 @@ public void SMR(String opcode,String r, String ix,String i, String address,Strin
                            int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR0.getText(),16);
                         GPR0.setText(DecimaltoHexa(temp3-temp2));
+                        if ((temp3-temp2)<0){
+                            negative=true;
+                        }
+                        else{
+                            negative=false;
+                        }
                        
                      }
                      else if("01".equals(r)){
@@ -2369,18 +2384,36 @@ public void SMR(String opcode,String r, String ix,String i, String address,Strin
                         int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR1.getText(),16);
                         GPR1.setText(DecimaltoHexa(temp3-temp2));
+                        if ((temp3-temp2)<0){
+                            negative=true;
+                        }
+                        else{
+                            negative=false;
+                        }
                      }
                       else if("10".equals(r)){
                        
                        int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR2.getText(),16);
                         GPR2.setText(DecimaltoHexa(temp3-temp2));
+                        if ((temp3-temp2)<0){
+                            negative=true;
+                        }
+                        else{
+                            negative=false;
+                        }
                      }
                       else if("11".equals(r)){
                     
                      int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR3.getText(),16);
                         GPR3.setText(DecimaltoHexa(temp3-temp2));
+                        if ((temp3-temp2)<0){
+                            negative=true;
+                        }
+                        else{
+                            negative=false;
+                        }
                      }
                        
 }
@@ -2721,6 +2754,9 @@ public void setRxyc( String r, String data){
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         // TODO add your handling code here:
+         
+       
+        
     
       
     }//GEN-LAST:event_jButton12ActionPerformed
@@ -2729,13 +2765,14 @@ public void setRxyc( String r, String data){
         // TODO add your handling code here:
         //load program1
        // keyboard.setText("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,14");
+       keyboard.setText("5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,21");
           String S= keyboard.getText();
           
         int counter =1;
         String[] arrSplit = S.split(",");
      int[] numbers = new int[21];
     
-     PC.setText("0017");
+     PC.setText("0020");
         for (int i=0; i < arrSplit.length; i++)
             
     {
@@ -2748,19 +2785,19 @@ public void setRxyc( String r, String data){
         int searchNumber=numbers[20];
         System.out.println(searchNumber);
         System.out.println(prog);
-        int closestNumber = numbers[0];
-        for (int i = 1; i < 20; i++) {
-            if (Math.abs(numbers[i] - searchNumber) < Math.abs(closestNumber - searchNumber)) {
-                closestNumber = numbers[i];
-            }
-             System.out.println(closestNumber);
-        }
-        GPR0.setText(DecimaltoHexa(closestNumber));
-        printer.append("Closest Number:" +closestNumber);
-         String [] tokens;
+////        int closestNumber = numbers[0];
+////        for (int i = 1; i < 20; i++) {
+////            if (Math.abs(numbers[i] - searchNumber) < Math.abs(closestNumber - searchNumber)) {
+////                closestNumber = numbers[i];
+////            }
+////             System.out.println(closestNumber);
+////        }
+//        GPR0.setText(DecimaltoHexa(closestNumber));
+//        printer.append("Closest Number:" +closestNumber);
+        String [] tokens;
      try{
             
-        File myObj = new File("IPL.txt"); //opens file "IPL.txt"
+        File myObj = new File("Program1.txt"); //opens file "IPL.txt"
       Scanner myReader = new Scanner(myObj);
         
       while (myReader.hasNextLine()) {
