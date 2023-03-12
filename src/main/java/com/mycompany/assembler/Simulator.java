@@ -33,8 +33,8 @@ public class Simulator extends javax.swing.JFrame {
     int MAX_ENTRIES=16;
     
    ConcurrentHashMap<String, String> prog = new ConcurrentHashMap<String, String>(); //create a memory to store value and its address
-   LinkedHashMap<String, String> Cache = new LinkedHashMap<String, String>(MAX_ENTRIES + 1, .75F, false) {
-         protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {
+   LinkedHashMap<String, String> Cache = new LinkedHashMap<String, String>(MAX_ENTRIES + 1, .75F, false) { //Define cache
+         protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {   //remove first entry when the cache exceeds 16 line limit
             return size() > MAX_ENTRIES;}
          };
   
@@ -72,12 +72,12 @@ public class Simulator extends javax.swing.JFrame {
     String ixr3="0";//indirect register
     
     boolean pc1=true;
-    boolean negative=false;
+    boolean negative=false;//undeflow
     int cc=0;
-    int cc1=0;
-    int cc2=0;
-    int cc3=0;
-    int cc4=0;
+    int cc1=0; //overflow
+    int cc2=0;//underflow
+    int cc3=0; //divide by zero
+    int cc4=0;//equal
       String hex;
       
       public static final HashMap<String, String> OPCODE = new HashMap<String, String>();//opcodes mappes to their binary equivalent
@@ -165,6 +165,9 @@ public class Simulator extends javax.swing.JFrame {
         IR = new javax.swing.JTextField();
         MFR = new javax.swing.JTextField();
         Priviledged = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        console = new javax.swing.JTextArea();
+        jLabel24 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         Address = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
@@ -413,33 +416,45 @@ public class Simulator extends javax.swing.JFrame {
             }
         });
 
+        console.setColumns(20);
+        console.setRows(5);
+        jScrollPane1.setViewportView(console);
+
+        jLabel24.setText("Engineer's Console");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(PC)
-                    .addComponent(MAR)
-                    .addComponent(MBR)
-                    .addComponent(IR)
-                    .addComponent(MFR)
-                    .addComponent(Priviledged, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButton8)
-                        .addComponent(jButton9, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addComponent(jButton10, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(PC)
+                            .addComponent(MAR)
+                            .addComponent(MBR)
+                            .addComponent(IR)
+                            .addComponent(MFR)
+                            .addComponent(Priviledged, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jButton8)
+                                .addComponent(jButton9, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jButton10, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel24)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -473,7 +488,11 @@ public class Simulator extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(Priviledged, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel24)
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel15.setText("Address");
@@ -920,8 +939,8 @@ public class Simulator extends javax.swing.JFrame {
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
         );
 
         jButton17.setText("Load Program 1");
@@ -967,10 +986,10 @@ public class Simulator extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 18, Short.MAX_VALUE)))
                 .addGap(24, 24, 24))
@@ -978,7 +997,7 @@ public class Simulator extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -991,7 +1010,7 @@ public class Simulator extends javax.swing.JFrame {
                                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -1604,8 +1623,14 @@ public class Simulator extends javax.swing.JFrame {
      MAR.setText("");
      MBR.setText("");
      IR.setText("");
+     console.setText("Init \n");
+     printer.setText("");
+     keyboard.setText("");   
+     
         PC.setText("0000");
         prog.clear();
+        Cache.clear();
+        displayCache();
 //        new Simulator().setVisible(true);
 //        this.setVisible(false);
      Halt="Start";
@@ -1627,8 +1652,8 @@ public class Simulator extends javax.swing.JFrame {
            
        }else{
          prog.put(tokens[0],tokens[1]);   //sets value and their address in memory
-         updateCache(tokens[0],tokens[1]);
-         displayCache();
+         updateCache(tokens[0],tokens[1]);//update cache 
+         displayCache();//dispaly cache content
          }
          
          
@@ -1660,9 +1685,9 @@ public class Simulator extends javax.swing.JFrame {
         //store
         prog.put(MAR.getText(),MBR.getText());//sets MAR and MBR in memory
         System.out.println(prog);
-        updateCache(MAR.getText(),MBR.getText());
-        displayCache();
-        printer.append(MBR.getText()+"Stored at Address :"+MAR.getText()+"\n");
+        updateCache(MAR.getText(),MBR.getText()); //update cache
+        displayCache();//dispaly the updated cache
+        console.append(MBR.getText()+" Stored at Address :"+MAR.getText()+"\n");
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
@@ -1675,7 +1700,7 @@ public class Simulator extends javax.swing.JFrame {
                   
              
       try{
-         while (true){ //iterate over memory
+         while (true){ //Keep running instructions till the last program counter entry available
              int  prc=Integer.parseInt(PC.getText(),16);
              String bin =hexToBinary(prog.get(PC.getText())); //extarcts binary from the vlaue staored at i address
            //  programcounter++;
@@ -1742,8 +1767,8 @@ public void execute(String prc,String bin) {
 		address = bin.substring(11, 16);// exctracts address value
                String add=  EffectiveAddress(Hexa(address),bin); //converts address to effective address
            
-              
-               
+              int p = Integer.parseInt(prc,16)-1; //reduce program counter by 1 to get current program counter
+               prc=DecimaltoHexa(p); // conver back to hexa decimal
               
 
               System.out.println(opcode);
@@ -1756,6 +1781,32 @@ public void execute(String prc,String bin) {
 //            } 
              System.out.println(instr);
              System.out.println(r); 
+             
+             
+             //code to print instructions in Engineer's console
+             if ("LDX".equals(instr) ||"STX".equals(instr) ){
+                 if("0".equals(i)){
+             console.append(prc + " : "+ instr + " "+ ix+" "+ Hexa(address)+"\n");
+                 }else{
+                      console.append(prc + " : "+instr + ", "+ ix+", "+ Hexa(address)+"," +i+"\n");
+                 }
+             }
+             else if ("MLT".equals(instr) ||"DVD".equals(instr) ||"TRR".equals(instr)||"AND".equals(instr)||"ORR".equals(instr) ){
+                 console.append(prc + " : "+instr + ", "+ r+", "+ ix+"\n");
+             }
+             else if("NOT".equals(instr)){
+                 console.append(prc + " : "+instr + ", "+ r+"\n");
+             }
+               else if("HLT".equals(instr)){
+                    console.append(prc + " : "+instr +"\n");
+               }
+             else{
+                 if("0".equals(i)){
+             console.append(prc + " : "+instr + ", "+ r+", "+ Hexa(address)+"\n");
+                 }else{
+                      console.append(prc + " : "+instr + ", "+ r+", "+ Hexa(address)+"," +i+"\n");
+                 }
+             }
      if(instr == "HLT"){System.out.println("null");// halt
      Halt="end";
      }
@@ -1929,136 +1980,138 @@ public void execute(String prc,String bin) {
  
  }
 public void OUT(String r,String address){
+    //OUT opcode
     if("00001".equals(address)){
         int x = getRxyc(r);
          if ("00".equals(r)){
                      
-                       printer.append("\nHexadecimal: "+DecimaltoHexa(x)+ " Decimal :" +x);
+                       printer.append("\nHexadecimal: "+DecimaltoHexa(x)+ " Decimal :" +x); //prints both hexa decimal and ineteger value
                       
                      }
                      else if("01".equals(r)){
                         
-                        printer.append("\nHexadecimal: "+DecimaltoHexa(x)+ " Decimal :" +x);
+                        printer.append("\nHexadecimal: "+DecimaltoHexa(x)+ " Decimal :" +x);//prints both hexa decimal and ineteger value
                        
                      }
                       else if("10".equals(r)){
                        
-                        printer.append("\nHexadecimal: "+DecimaltoHexa(x)+ " Decimal :" +x);
+                        printer.append("\nHexadecimal: "+DecimaltoHexa(x)+ " Decimal :" +x);//prints both hexa decimal and ineteger value
                     
                      }
                       else if("11".equals(r)){
                     
-                       printer.append("\nHexadecimal: "+DecimaltoHexa(x)+ " Decimal :" +x);
+                       printer.append("\nHexadecimal: "+DecimaltoHexa(x)+ " Decimal :" +x);//prints both hexa decimal and ineteger value
                       
                      }
     }
 }
 public void IN(String r,String address){
     if("00000".equals(address)){
-        String S = keyboard.getText();
+        String S = keyboard.getText(); //get input from keyboard
          if ("00".equals(r)){
                      
-                        GPR0.setText(S);
+                        GPR0.setText(S); //set input to GPR0
                       
                      }
                      else if("01".equals(r)){
                         
-                        GPR1.setText(S);
+                        GPR1.setText(S);//set input to GPR1
                        
                      }
                       else if("10".equals(r)){
                        
-                        GPR2.setText(S);
+                        GPR2.setText(S);//set input to GPR2
                     
                      }
                       else if("11".equals(r)){
                     
-                        GPR3.setText(S);
+                        GPR3.setText(S);//set input to GPR3
                       
                      }
     }
 }
 public void LDR(String opcode,String r, String ix,String i, String address,String add){
+    //LDR implementation
     if ("00".equals(r)){
                      
-                        GPR0.setText(prog.get(add));
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        GPR0.setText(prog.get(add)); //set GPR0 with c(EA)
+                        MAR.setText(add);//set MAR with EA
+                        MBR.setText(prog.get(add));//set MBR with c(EA)
                      }
                      else if("01".equals(r)){
                         
-                        GPR1.setText(prog.get(add));
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        GPR1.setText(prog.get(add));//set GPR1 with c(EA)
+                        MAR.setText(add);//set MAR with EA
+                        MBR.setText(prog.get(add));//set MBR with c(EA)
                      }
                       else if("10".equals(r)){
                        
-                        GPR2.setText(prog.get(add));
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        GPR2.setText(prog.get(add));//set GPR2 with c(EA)
+                        MAR.setText(add);//set MAR with EA
+                        MBR.setText(prog.get(add));//set MBR with c(EA)
                      }
                       else if("11".equals(r)){
                     
-                        GPR3.setText(prog.get(add));
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        GPR3.setText(prog.get(add));//set GPR3 with c(EA)
+                        MAR.setText(add);//set MAR with EA
+                        MBR.setText(prog.get(add));//set MBR with c(EA)
                      }
 }
 
 public void LDA(String opcode,String r, String ix,String i, String address,String add){
-    
+    //LDA implementation
                      if ("00".equals(r)){
                      
-                        GPR0.setText(add);
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        GPR0.setText(add); //set GPRO with EA
+                        MAR.setText(add);//set MAR with EA
+                        MBR.setText(prog.get(add));//set MAR with c(EA)
                      }
                      else if("01".equals(r)){
                         
-                        GPR1.setText(add);
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        GPR1.setText(add);//set GPR1 with EA
+                        MAR.setText(add);//set MAR with EA
+                        MBR.setText(prog.get(add));//set MAR with c(EA)
                      }
                       else if("10".equals(r)){
                        
-                        GPR2.setText(add);
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        GPR2.setText(add);//set GPR2 with EA
+                        MAR.setText(add);//set MAR with EA
+                        MBR.setText(prog.get(add));//set MAR with c(EA)
                      }
                       else if("11".equals(r)){
                     
-                        GPR3.setText(add);
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        GPR3.setText(add);//set GPR3 with EA
+                        MAR.setText(add);//set MAR with EA
+                        MBR.setText(prog.get(add)); //set MAR with c(EA)
                      }
 }
 
 
 public void STR(String opcode,String r, String ix,String i, String address,String add){
-
+//STR Implementation
 if ("00".equals(r)){
                      
                         String temp = GPR0.getText();
-                        prog.put(add,temp);
+                        prog.put(add,temp);//store value of GPR0 to the effective address
                         System.out.println(add+temp);
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        MAR.setText(add);//set MAR as EA
+                        MBR.setText(prog.get(add));//set MBR as c(EA) 
                      }
                      else if("01".equals(r)){
                         
-                        String temp = GPR1.getText();
+                        String temp = GPR1.getText();//store value of GPR1 to the effective address
                         prog.put(add,temp);
                         MAR.setText(add);
                         MBR.setText(prog.get(add));
                      }
                       else if("10".equals(r)){
                        
-                        String temp = GPR2.getText();
+                        String temp = GPR2.getText();//store value of GPR2 to the effective address
                         prog.put(add,temp);
                         MAR.setText(add);
                         MBR.setText(prog.get(add));
                      }
-                      else if("11".equals(r)){
+                      else if("11".equals(r)){//store value of GPR3 to the effective address
                     
                         String temp = GPR3.getText();
                         prog.put(add,temp);
@@ -2069,56 +2122,60 @@ if ("00".equals(r)){
 
 }
 public void LDX(String opcode,String r, String ix,String i, String address,String add){
+    //LDX Implementation
      if ("01".equals(ix)){
                          System.out.println("hello");
-                        IXR1.setText(prog.get(add));
-                        MAR.setText(add);
+                        IXR1.setText(prog.get(add)); //Store IXR1 with c(EA)
+                        MAR.setText(add);//set MAR to EA
                         MBR.setText(prog.get(add));
                      }
-                     else if("10".equals(ix)){
+                     else if("10".equals(ix)){  
                         System.out.println("hello");
-                        IXR2.setText(prog.get(add));
-                        MAR.setText(add);
+                        IXR2.setText(prog.get(add));//Store IXR2 with c(EA)
+                        MAR.setText(add);//set MAR to EA
                         MBR.setText(prog.get(add));
                      }
-                      else if("11".equals(ix)){
+                      else if("11".equals(ix)){ 
                        System.out.println("hello");
-                        IXR3.setText(prog.get(add));
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        IXR3.setText(prog.get(add));//Store IXR3 with c(EA)
+                        MAR.setText(add);//set MAR to EA
+                        MBR.setText(prog.get(add));//set MBR to c(EA)
                      }
 }
 public void STX(String opcode,String r, String ix,String i, String address,String add){
+    
+    //STX implementation
    if("01".equals(ix)){
                         
-                        String temp = IXR1.getText();
-                        prog.put(add,temp);
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        String temp = IXR1.getText(); 
+                        prog.put(add,temp); //Store IXR1 in EA
+                        MAR.setText(add);//set MAR to EA
+                        MBR.setText(prog.get(add));//set MBR to c(EA)
                      }
                       else if("10".equals(ix)){
                        
                         String temp = IXR2.getText();
-                        prog.put(add,temp);
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        prog.put(add,temp); //Store IXR2 in EA
+                        MAR.setText(add);//set MAR to EA
+                        MBR.setText(prog.get(add));//set MBR to c(EA)
                      }
                       else if("11".equals(ix)){
                     
-                        String temp = IXR3.getText();
+                        String temp = IXR3.getText();//Store IXR3 in EA
                         prog.put(add,temp);
-                        MAR.setText(add);
-                        MBR.setText(prog.get(add));
+                        MAR.setText(add);//set MAR to EA
+                        MBR.setText(prog.get(add));//set MBR to c(EA)
                      }
  
 }
 
 public void JZ(String opcode,String r, String ix,String i, String address,String add){
+    //JZ implementation
      if ("00".equals(r)){
                      
                         String temp = GPR0.getText();
                         
-                        if("0000".equals(temp)){
+                        if("0000".equals(temp)){  //if GPR0 is 0, change program counter to effective address
                             pc1=false;
                             PC.setText(add);
                      
@@ -2127,11 +2184,11 @@ public void JZ(String opcode,String r, String ix,String i, String address,String
                         
                      
                      }
-                     else if("01".equals(r)){
+                     else if("01".equals(r)){ 
                         
                         String temp = GPR1.getText();
                         
-                        if("0000".equals(temp)){
+                        if("0000".equals(temp)){//if GPR1 is 0, change program counter to effective address
                             pc1=false;
                             PC.setText(add);
                      
@@ -2139,20 +2196,20 @@ public void JZ(String opcode,String r, String ix,String i, String address,String
                         }
                         
                      }
-                      else if("10".equals(r)){
+                      else if("10".equals(r)){ 
                        
                         String temp = GPR2.getText();
-                     if("0000".equals(temp)){
+                     if("0000".equals(temp)){//if GPR2 is 0, change program counter to effective address
                             pc1=false;
                             PC.setText(add);
                      
                             System.out.println(add);
                         }
                      }
-                      else if("11".equals(r)){
+                      else if("11".equals(r)){  
                     
                         String temp = GPR3.getText();
-                       if("0000".equals(temp)){
+                       if("0000".equals(temp)){//if GPR3 is 0, change program counter to effective address
                             pc1=false;
                             PC.setText(add);
                      
@@ -2166,7 +2223,7 @@ public void JNE(String opcode,String r, String ix,String i, String address,Strin
                      
                         String temp = GPR0.getText();
                         
-                        if(!"0000".equals(temp)){
+                        if(!"0000".equals(temp)){//if GPR0 is not equal to 0, change program counter to effective address
                             pc1=false;
                             PC.setText(add);
                      
@@ -2179,7 +2236,7 @@ public void JNE(String opcode,String r, String ix,String i, String address,Strin
                         
                         String temp = GPR1.getText();
                         
-                        if(!"0000".equals(temp)){
+                        if(!"0000".equals(temp)){//if GPR1 is not equal to 0, change program counter to effective address
                             pc1=false;
                             PC.setText(add);
                      
@@ -2190,14 +2247,14 @@ public void JNE(String opcode,String r, String ix,String i, String address,Strin
                       else if("10".equals(r)){
                        
                         String temp = GPR2.getText();
-                     if(!"0000".equals(temp)){
+                     if(!"0000".equals(temp)){//if GPR2 is not equal to 0, change program counter to effective address
                             pc1=false;
                             PC.setText(add);
                      
                             System.out.println(add);
                         }
                      }
-                      else if("11".equals(r)){
+                      else if("11".equals(r)){//if GPR3 is not equal to 0, change program counter to effective address
                     
                         String temp = GPR3.getText();
                        if(!"0000".equals(temp)){
@@ -2210,43 +2267,67 @@ public void JNE(String opcode,String r, String ix,String i, String address,Strin
                      
 }
 public void JCC(String opcode,String r, String ix,String i, String address,String add){
-    if(cc!=0){
+    //JCC implementation
+   if ("00".equals(r)){//if cc1=1, set program counter to EA
+    if(cc1!=0){
                          PC.setText(add);
                       System.out.println(add);
                          }
+   }
+   else if ("01".equals(r)){//if cc2=1, set program counter to EA
+    if(cc2!=0){
+                         PC.setText(add);
+                      System.out.println(add);
+                         }
+   }
+   else if ("10".equals(r)){//if cc3=1, set program counter to EA
+    if(cc3!=0){
+                         PC.setText(add);
+                      System.out.println(add);
+                         }
+   }
+   else if ("11".equals(r)){//if cc4=1, set program counter to EA
+    if(cc4!=0){
+                         PC.setText(add);
+                      System.out.println(add);
+                         }
+   }
 }
 public void JMA(String opcode,String r, String ix,String i, String address,String add){
-     PC.setText(add);
+    //JMA implementation
+     PC.setText(add);//Unditionally set PC to EA
 }
 public void JSR(String opcode,String r, String ix,String i, String address,String add){
+    //JSR implementation
     String temp=PC.getText();
                     
                         int temp1=Integer.parseInt(temp,16);
                         System.out.println(temp1);
-                      GPR3.setText (DecimaltoHexa( temp1)) ;
-                      PC.setText(add);
+                      GPR3.setText (DecimaltoHexa( temp1)) ; //increment program counter by 1 and store it in GPR3
+                      PC.setText(add);//set PC to EA
 }
 public void RFS(String opcode,String r, String ix,String i, String address,String add){
     //                        String hex1 = Integer.toString(Integer.parseInt(address),16).toUpperCase();
 //                        if (hex1.length() < 4)
 //                        hex1 = "000".substring(hex1.length() - 1) + hex1;
                         
-                        
-                        GPR0.setText(add);
-                        PC.setText(GPR3.getText());
+                        //RFS imsplementation
+                        GPR0.setText(add);//Store address to GPR0
+                        PC.setText(GPR3.getText()); //set program counter to c(GPR3)
     
 }
 public void SOB(String opcode,String r, String ix,String i, String address,String add){
-   if ("00".equals(r)){
+    //SOB Implementation
+   if ("00".equals(r)){ 
                      
                         String temp2 = GPR0.getText();
                         
-                        int temp3=Integer.parseInt(temp2,16)-1;
+                        int temp3=Integer.parseInt(temp2,16)-1; 
                        
-                      GPR0.setText (DecimaltoHexa( temp3)) ;
+                      GPR0.setText (DecimaltoHexa( temp3)) ;//c(r)=c(r)-1
                      
                       if(temp3>0){
-                          PC.setText(add);
+                          PC.setText(add);//set program to EA if c(r)>0
                       }
                      
                         
@@ -2258,10 +2339,10 @@ public void SOB(String opcode,String r, String ix,String i, String address,Strin
                         
                         int temp3=Integer.parseInt(temp2,16)-1;
                        
-                      GPR1.setText (DecimaltoHexa( temp3)) ;
+                      GPR1.setText (DecimaltoHexa( temp3)) ;//c(r)=c(r)-1
                      
                       if(temp3>0){
-                          PC.setText(add);
+                          PC.setText(add);//set program to EA if c(r)>0
                       }
                         
                      }
@@ -2270,10 +2351,10 @@ public void SOB(String opcode,String r, String ix,String i, String address,Strin
                         
                         int temp3=Integer.parseInt(temp2,16)-1;
                        
-                      GPR2.setText (DecimaltoHexa( temp3)) ;
+                      GPR2.setText (DecimaltoHexa( temp3)) ;//c(r)=c(r)-1
                      
                       if(temp3>0){
-                          PC.setText(add);
+                          PC.setText(add); //set program to EA if c(r)>0
                       }
                      }
                       else if("11".equals(r)){
@@ -2282,26 +2363,28 @@ public void SOB(String opcode,String r, String ix,String i, String address,Strin
                         
                         int temp3=Integer.parseInt(temp2,16)-1;
                        
-                      GPR3.setText (DecimaltoHexa( temp3)) ;
+                      GPR3.setText (DecimaltoHexa( temp3)) ; //c(r)=c(r)-1
                      
                       if(temp3>0){
-                          PC.setText(add);
+                          PC.setText(add); //set program to EA if c(r)>0
                       }
                      }
                       
 }
 public void JGE(String opcode,String r, String ix,String i, String address,String add){
+    
+    //JGE implementation
      if ("00".equals(r)){
                      
                         String temp2 = GPR0.getText();
                         
                         int temp3=Integer.parseInt(temp2,16)-1;
                        
-                      if (negative==true){
+                      if (negative==true){ // for negative value we do 2's compliment
                            temp3 = ((Integer.parseInt(Integer.toString(Integer.parseInt(temp2, 16), 2).replace('0', 'X').replace('1', '0').replace('X', '1'), 2) + 1) * -1)-1;
                       }
                      
-                      if(temp3+1>=0){
+                      if(temp3+1>=0){//if c(r)>=0 set porgram counter as EA
                           PC.setText(add);
                       }
                      
@@ -2314,12 +2397,12 @@ public void JGE(String opcode,String r, String ix,String i, String address,Strin
                         
                         int temp3=Integer.parseInt(temp2,16)-1;
                        
-                    if (negative==true){
+                    if (negative==true){// for negative value we do 2's compliment
                            temp3 = ((Integer.parseInt(Integer.toString(Integer.parseInt(temp2, 16), 2).replace('0', 'X').replace('1', '0').replace('X', '1'), 2) + 1) * -1)-1;
                       }
                      
                       if(temp3+1>=0){
-                          PC.setText(add);
+                          PC.setText(add);//if c(r)>=0 set porgram counter as EA
                       }
                         
                      }
@@ -2328,12 +2411,12 @@ public void JGE(String opcode,String r, String ix,String i, String address,Strin
                         
                         int temp3=Integer.parseInt(temp2,16)-1;
                        
-                   if (negative==true){
+                   if (negative==true){// for negative value we do 2's compliment
                            temp3 = ((Integer.parseInt(Integer.toString(Integer.parseInt(temp2, 16), 2).replace('0', 'X').replace('1', '0').replace('X', '1'), 2) + 1) * -1)-1;
                       }
                      
                       if(temp3+1>=0){
-                          PC.setText(add);
+                          PC.setText(add);//if c(r)>=0 set porgram counter as EA
                       }
                      }
                       else if("11".equals(r)){
@@ -2342,36 +2425,37 @@ public void JGE(String opcode,String r, String ix,String i, String address,Strin
                         
                         int temp3=Integer.parseInt(temp2,16)-1;
                        
-               if (negative==true){
+               if (negative==true){// for negative value we do 2's compliment
                            temp3 = ((Integer.parseInt(Integer.toString(Integer.parseInt(temp2, 16), 2).replace('0', 'X').replace('1', '0').replace('X', '1'), 2) + 1) * -1)-1;
                       }
                      
                       if(temp3+1>=0){
-                          PC.setText(add);
+                          PC.setText(add);//if c(r)>=0 set porgram counter as EA
                       }
                      }
                     
 }
 public void AMR(String opcode,String r, String ix,String i, String address,String add){
-    if ("00".equals(r)){
+    //AMR implementation
+    if ("00".equals(r)){//c(r)=c(r)+c(EA)
                            int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR0.getText(),16);
                         GPR0.setText(DecimaltoHexa(temp2+temp3));
                        
                      }
-                     else if("01".equals(r)){
+                     else if("01".equals(r)){ //c(r)=c(r)+c(EA)
                         
                         int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR1.getText(),16);
                         GPR1.setText(DecimaltoHexa(temp2+temp3));
                      }
-                      else if("10".equals(r)){
+                      else if("10".equals(r)){ //c(r)=c(r)+c(EA)
                        
                        int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR2.getText(),16);
                         GPR2.setText(DecimaltoHexa(temp2+temp3));
                      }
-                      else if("11".equals(r)){
+                      else if("11".equals(r)){//c(r)=c(r)+c(EA)
                     
                      int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR3.getText(),16);
@@ -2380,15 +2464,18 @@ public void AMR(String opcode,String r, String ix,String i, String address,Strin
                      
 }
 public void SMR(String opcode,String r, String ix,String i, String address,String add){
-  if ("00".equals(r)){
+  if ("00".equals(r)){//c(r)=c(r)-c(EA)
                            int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR0.getText(),16);
                         GPR0.setText(DecimaltoHexa(temp3-temp2));
                         if ((temp3-temp2)<0){
                             negative=true;
+                            cc2=1;
+                            console.append("cc(2)=1"); //set underflow if negative value
                         }
                         else{
                             negative=false;
+                            cc2=0;
                         }
                        
                      }
@@ -2397,11 +2484,14 @@ public void SMR(String opcode,String r, String ix,String i, String address,Strin
                         int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR1.getText(),16);
                         GPR1.setText(DecimaltoHexa(temp3-temp2));
-                        if ((temp3-temp2)<0){
+                         if ((temp3-temp2)<0){
                             negative=true;
+                            cc2=1;
+                            console.append("cc(2)=1"); //set underflow if negative value
                         }
                         else{
                             negative=false;
+                            cc2=0;
                         }
                      }
                       else if("10".equals(r)){
@@ -2409,11 +2499,14 @@ public void SMR(String opcode,String r, String ix,String i, String address,Strin
                        int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR2.getText(),16);
                         GPR2.setText(DecimaltoHexa(temp3-temp2));
-                        if ((temp3-temp2)<0){
+                         if ((temp3-temp2)<0){
                             negative=true;
+                            cc2=1;
+                            console.append("cc(2)=1");//set underflow if negative value
                         }
                         else{
                             negative=false;
+                            cc2=0;
                         }
                      }
                       else if("11".equals(r)){
@@ -2421,36 +2514,40 @@ public void SMR(String opcode,String r, String ix,String i, String address,Strin
                      int temp2= Integer.parseInt(prog.get(add),16);
                            int temp3 = Integer.parseInt(GPR3.getText(),16);
                         GPR3.setText(DecimaltoHexa(temp3-temp2));
-                        if ((temp3-temp2)<0){
+                         if ((temp3-temp2)<0){
                             negative=true;
+                            cc2=1;
+                            console.append("cc(2)=1");//set underflow if negative value
                         }
                         else{
                             negative=false;
+                            cc2=0;
                         }
                      }
                        
 }
 public void AIR(String opcode,String r, String ix,String i, String address,String add){
-  if ("00".equals(r)){
+    //implement AIR
+  if ("00".equals(r)){ //r=c(r)+c(EA)
                            int temp2= Integer.parseInt(address,2);
                            int temp3 = Integer.parseInt(GPR0.getText(),16);
                         GPR0.setText(DecimaltoHexa(temp3+temp2));
                       
                        
                      }
-                     else if("01".equals(r)){
+                     else if("01".equals(r)){ //r=c(r)+c(EA)
                         
                         int temp2= Integer.parseInt(address,2);
                            int temp3 = Integer.parseInt(GPR1.getText(),16);
                         GPR1.setText(DecimaltoHexa(temp3+temp2));
                      }
-                      else if("10".equals(r)){
+                      else if("10".equals(r)){ //r=c(r)+c(EA)
                        
                       int temp2= Integer.parseInt(address,2);
                            int temp3 = Integer.parseInt(GPR2.getText(),16);
                         GPR2.setText(DecimaltoHexa(temp3+temp2));
                      }
-                      else if("11".equals(r)){
+                      else if("11".equals(r)){ //r=c(r)+c(EA)
                     
                     int temp2= Integer.parseInt(address,2);
                            int temp3 = Integer.parseInt(GPR3.getText(),16);
@@ -2459,40 +2556,78 @@ public void AIR(String opcode,String r, String ix,String i, String address,Strin
                    
 }
 public void SIR(String opcode,String r, String ix,String i, String address,String add){
-     if ("00".equals(r)){
+    //SIR implementation
+     if ("00".equals(r)){ //r=c(r)-c(EA)
                            int temp2= Integer.parseInt(address,2);
                            int temp3 = Integer.parseInt(GPR0.getText(),16);
                         GPR0.setText(DecimaltoHexa(temp3-temp2));
+                         if ((temp3-temp2)<0){
+                            negative=true;
+                            cc2=1;
+                            console.append("cc(2)=1"); //set underflow if negative value
+                        }
+                        else{
+                            negative=false;
+                            cc2=0;
+                        }
                        
                      }
-                     else if("01".equals(r)){
+                     else if("01".equals(r)){ //r=c(r)-c(EA)
                         
                         int temp2= Integer.parseInt(address,2);
                            int temp3 = Integer.parseInt(GPR1.getText(),16);
                         GPR1.setText(DecimaltoHexa(temp3-temp2));
+                         if ((temp3-temp2)<0){
+                            negative=true;
+                            cc2=1;
+                            console.append("cc(2)=1"); //set underflow if negative value
+                        }
+                        else{
+                            negative=false;
+                            cc2=0;
+                        }
                      }
-                      else if("10".equals(r)){
+                      else if("10".equals(r)){ //r=c(r)-c(EA)
                        
                       int temp2= Integer.parseInt(address,2);
                            int temp3 = Integer.parseInt(GPR2.getText(),16);
                         GPR2.setText(DecimaltoHexa(temp3-temp2));
+                         if ((temp3-temp2)<0){
+                            negative=true;
+                            cc2=1;
+                            console.append("cc(2)=1"); //set underflow if negative value
+                        }
+                        else{
+                            negative=false;
+                            cc2=0;
+                        }
                      }
-                      else if("11".equals(r)){
+                      else if("11".equals(r)){ //r=c(r)-c(EA)
                     
                     int temp2= Integer.parseInt(address,2);
                            int temp3 = Integer.parseInt(GPR3.getText(),16);
                         GPR3.setText(DecimaltoHexa(temp3-temp2));
+                         if ((temp3-temp2)<0){
+                            negative=true;
+                            cc2=1;
+                            console.append("cc(2)=1"); //set underflow if negative value
+                        }
+                        else{
+                            negative=false;
+                            cc2=0;
+                        }
                      }
                 
                     
 }
 public void MLT(String opcode,String r, String ix,String i, String address,String add){
+    //Multiplication implementation c(rx)*c(ry)
   int temp2=0;
                             int temp3=0;
                             int high=0;
                             int low=0;
                             int prod=1;
-                     if (("00".equals(r) || "10".equals(r)) && ("00".equals(ix) || "10".equals(ix)) ){
+                     if (("00".equals(r) || "10".equals(r)) && ("00".equals(ix) || "10".equals(ix)) ){//check for rx and ry to be 0 or 2
                          
                          if ("00".equals(r)){
                           temp2 = Integer.parseInt(GPR0.getText(),16);
@@ -2501,20 +2636,20 @@ public void MLT(String opcode,String r, String ix,String i, String address,Strin
                           if (prod>Integer.MAX_VALUE){
                               cc=1;
                               cc1=1;
-                              keyboard.append("cc(1)=1");
+                             console.append("cc(1)=1 \n"); //set overflow
                           }
                           else{
                               cc1=0;
-                              keyboard.append("cc(1)=0");
+                              console.append("cc(1)=0 \n"); 
                               cc=0;
                           }
                           System.out.println(prod);
-                          high = prod >> 16;
+                          high = prod >> 16; //extracting last 16 bits
                           System.out.println(high);
-                          low= prod & 0xFFFF;
+                          low= prod & 0xFFFF;//extracting first 16 bits
                           System.out.println(low);
-                          GPR0.setText(DecimaltoHexa(high));
-                          GPR1.setText(DecimaltoHexa(low));
+                          GPR0.setText(DecimaltoHexa(high));//higher bits are stored in rx
+                          GPR1.setText(DecimaltoHexa(low));//lower bits are stored in rx+1
                          
                          }
                          if ("10".equals(r)){
@@ -2524,14 +2659,17 @@ public void MLT(String opcode,String r, String ix,String i, String address,Strin
                            if (prod>Integer.MAX_VALUE){
                               cc=1;
                               cc1=1;
+                             console.append("cc(1)=1 \n"); //set overflow
                           }
                           else{
                               cc1=0;
+                              console.append("cc(1)=0 \n");
+                              cc=0;
                           }
-                          high = prod>>16;
-                          low= prod & 0xFFFF;
-                          GPR2.setText(DecimaltoHexa(high));
-                          GPR3.setText(DecimaltoHexa(low));
+                          high = prod>>16;//extracting last 16 bits
+                          low= prod & 0xFFFF;//extracting first 16 bits
+                          GPR2.setText(DecimaltoHexa(high));//higher bits are stored in rx
+                          GPR3.setText(DecimaltoHexa(low));//lower bits are stored in rx+1
                          }
                        
                     
@@ -2539,6 +2677,7 @@ public void MLT(String opcode,String r, String ix,String i, String address,Strin
                      }  
 }
 public void DVD(String opcode,String r, String ix,String i, String address,String add){
+    //DVD implemmentation c(rx)/c(ry)
      int temp2=0;
                             int temp3=0;
                             int high=0;
@@ -2555,22 +2694,22 @@ public void DVD(String opcode,String r, String ix,String i, String address,Strin
                           if(temp3==0){
                               cc=3;
                               cc3=1; 
-                              printer.append("cc(3)=1");
+                              console.append("cc(3)=1 \n"); //Divide by zero flag
                           }
                           else{
                               cc3=0;
-                              printer.append("cc(3)=0");
+                              console.append("cc(3)=0 \n");
                               cc=0;
                           }
                            System.out.println(temp2);
                            System.out.println(temp3);
                        
-                          q=temp2/temp3;
+                          q=temp2/temp3; //calculate quotient
                           System.out.println(q);
-                          rem=temp2%temp3;
+                          rem=temp2%temp3;//calculate remainder
                           System.out.println(r);
-                          GPR0.setText(DecimaltoHexa(q));
-                          GPR1.setText(DecimaltoHexa(rem));
+                          GPR0.setText(DecimaltoHexa(q)); //quotient is store in rx
+                          GPR1.setText(DecimaltoHexa(rem));//remiander is stored in rx+1
                          
                          }
                          if ("10".equals(r)){
@@ -2579,10 +2718,12 @@ public void DVD(String opcode,String r, String ix,String i, String address,Strin
                            if(temp3==0){
                               cc=3;
                               cc3=1; 
-                              printer.append("cc(3)=1");
+                              console.append("cc(3)=1 \n"); //Divide by zero flag
                           }
                           else{
-                              cc3=0;
+                               cc3=0;
+                              console.append("cc(3)=0 \n");
+                              cc=0;
                           }
                            q=temp2/temp3;
                           System.out.println(q);
@@ -2598,54 +2739,58 @@ public void DVD(String opcode,String r, String ix,String i, String address,Strin
                   
 }
 public void TRR(String opcode,String r, String ix,String i, String address,String add){
+  //TRR implementation c(rx)==c(ry)
    int rx=getRxyc(r);
                          int ry=getRxyc(ix);                        
                             if(rx==ry){
                               cc=4;
                               cc4=1;
-                              printer.append("cc(4)=1 \n");
+                              console.append("cc(4)=1 \n");
                           }
                             else{
-                                printer.append("cc(4)=0 \n");
+                                console.append("cc(4)=0 \n");
                                 cc4=0;
                                 cc=0;
                             }
                           
 }
 public void AND(String opcode,String r, String ix,String i, String address,String add){
+    //AND implementation c(rx) and c(ry)
                         int rx=getRxyc(r);
                          int ry=getRxyc(ix);     
                        
                         setRxyc(r,DecimaltoHexa(rx&ry));
 }
 public void ORR(String opcode,String r, String ix,String i, String address,String add){
-                        
+                //AND implementation c(rx)or  c(ry)        
                         int rx=getRxyc(r);
                         int ry=getRxyc(ix);
                         setRxyc(r,DecimaltoHexa(rx | ry));
 }
 public void NOT(String opcode,String r, String ix,String i, String address,String add){
+    //not implementation 
                         int rx=getRxyc(r);
                         
                         setRxyc(r,DecimaltoHexa(~rx & 0xffff));
 }
 public void SRC(String bin, String r){
+    //SRC implementation
     String R= bin.substring(6, 8);
                        int AL = Integer.parseInt(bin.substring(8, 9),2);
                        int LR = Integer.parseInt(bin.substring(9, 10),2);
                        int count = Integer.parseInt(bin.substring(11, 16),2);
                        int data = getRxyc(r);
                        
-                        if (AL == 0) {
-                            if (LR == 0) {
+                        if (AL == 0) { //arithmetic shift
+                            if (LR == 0) {//left shift
                                 data = data >> count;
                             }
-                            if (LR == 1) {
+                            if (LR == 1) {//right shift
                                data = data << count;
                             }
                         }
-                        if (AL == 1) {
-                            if (LR == 0) {
+                        if (AL == 1) {//logical shift
+                            if (LR == 0) { //left shift
                                 if (data >= 0)
                                     data = (data >>> count);
                                 else {
@@ -2654,7 +2799,7 @@ public void SRC(String bin, String r){
                                     data = Integer.parseInt(x, 2);
                                 }
                             }
-                            if (LR == 1) {
+                            if (LR == 1) {//right shift
                                 data = data << count;
                             }
                         }
@@ -2663,6 +2808,7 @@ public void SRC(String bin, String r){
     
 }
 public void RRC(String bin, String r){
+    //RRC
     String R= bin.substring(6, 8);
                        int AL = Integer.parseInt(bin.substring(8, 9),2);
                     int  LR = Integer.parseInt(bin.substring(9, 10),2);
@@ -2677,12 +2823,12 @@ public void RRC(String bin, String r){
                       if(data<0){
                           bindata=bindata.replaceAll("1111111111111111", "");
                       }
-                         if (LR == 1) {
+                         if (LR == 1) {//right rotate
                                 first = bindata.substring(count, bindata.length());
                                 second = bindata.substring(0, count);
                                 bindata = first + second;
                             }
-                            if (LR == 0) {
+                            if (LR == 0) {//left rotate
                                 first = bindata.substring(0, bindata.length() - count);
                                 second = bindata.substring(bindata.length() - count, bindata.length());
                                  bindata = second + first;
@@ -2733,7 +2879,7 @@ public void setRxyc( String r, String data){
     
 }
  public void updateCache(String address, String data){
-               Cache.put(address, data);
+               Cache.put(address, data);//update cache with new values
               
                 
                
@@ -2745,9 +2891,9 @@ public void setRxyc( String r, String data){
  public void displayCache(){
      System.out.print(Cache);
      cache.setText("");
-     Set <String> keys = Cache.keySet();
+     Set <String> keys = Cache.keySet();//extract address
      for (String key :keys){
-         cache.append("Tag: " + key + " Data: " + Cache.get(key)+ "\n");
+         cache.append("Tag: " + key + " Data: " + Cache.get(key)+ "\n");//display cache lines
      }
  }
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
@@ -2813,27 +2959,35 @@ public void setRxyc( String r, String data){
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         // TODO add your handling code here:
         //load program1
-       // keyboard.setText("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,14");
+       // keyboard.setText("10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,101");
      
-          String S= keyboard.getText();
+          String S= keyboard.getText();//take inut from keybaord
           
         int counter =1;
         String[] arrSplit = S.split(",");
      int[] numbers = new int[21];
     
-     PC.setText("0020");
+     PC.setText("0020"); //set program counter to start of program
+   
         for (int i=0; i < arrSplit.length; i++)
             
     {
       System.out.println(arrSplit[i]);
       numbers[i]=Integer.parseInt(arrSplit[i]);
-      prog.put(DecimaltoHexa(counter), DecimaltoHexa(Integer.parseInt(arrSplit[i])));
+      prog.put(DecimaltoHexa(counter), DecimaltoHexa(Integer.parseInt(arrSplit[i])));//load numbers into the memory
       counter++;
-      printer.append(arrSplit[i]+"\n");
+ 
     }
+   //  console.append(Integer.toString(counter));
+     if (counter<22){
+         console.append("Enter 20 comma seprated values followed by value to searched \n");//check if all values have been provided
+     }
+     else{
+         console.append("Program 1 loaded, click run \n");
+     }
         int searchNumber=numbers[20];
-        System.out.println(searchNumber);
-        System.out.println(prog);
+ //       System.out.println(searchNumber);
+ //       System.out.println(prog);
 ////        int closestNumber = numbers[0];
 ////        for (int i = 1; i < 20; i++) {
 ////            if (Math.abs(numbers[i] - searchNumber) < Math.abs(closestNumber - searchNumber)) {
@@ -2944,6 +3098,7 @@ public void setRxyc( String r, String data){
     private javax.swing.JTextField PC;
     private javax.swing.JTextField Priviledged;
     private javax.swing.JTextArea cache;
+    private javax.swing.JTextArea console;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -2977,6 +3132,7 @@ public void setRxyc( String r, String data){
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -2990,6 +3146,7 @@ public void setRxyc( String r, String data){
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
