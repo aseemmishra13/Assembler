@@ -1,13 +1,4 @@
-0016 FFFF-> Max value
-0017 1111->Stores closest Difference
-0018 1111->Temporary address to store current array index 
-0019 0100->Equal loop address
-001A 002F->Positive value address
-001B 0200->CLosest Diff address
-001C 0026->Main loop address
-001D 0102->Printing output loop address
-001E 1111
-001F 1111-> Address to store the answer
+
 
 
 Begin Address->0020
@@ -39,13 +30,13 @@ Positive Values address->002F
 
 
 CLosestDiff add->0200
-0200 0917->STR,01,0017->Store difference at 0017
-0201 0818->STR,00,0018-> Store array index at 0018
-0202 0538->LDR,01,0018,1 (indirect addressing)-> Load R1 with value of array index
-0203 091F->STR,01,001F->Answer is stored at 001F address
-0204 1801->AIR,00,0001->Increment array index by 1
-0205 3B3C->SOB,11,001C,1 (indirect addressing)-> jump to start of the loop if we havent reached end of array
-0206 2C3D->JMA,00,001D,1 (indirect addressing)-> Jump to output address
+0100 0917->STR,01,0017->Store difference at 0017
+0101 0818->STR,00,0018-> Store array index at 0018
+0102 0538->LDR,01,0018,1 (indirect addressing)-> Load R1 with value of array index
+0103 091F->STR,01,001F->Answer is stored at 001F address
+0104 1801->AIR,00,0001->Increment array index by 1
+0105 3B3C->SOB,11,001C,1 (indirect addressing)-> jump to start of the loop if we havent reached end of array
+0106 2C3D->JMA,00,001D,1 (indirect addressing)-> Jump to output address
 
 
 EqualLoop add->0100
@@ -55,52 +46,65 @@ EqualLoop add->0100
 
 output print address->0102
 Start printing input number
-0102 0501->LDR,01,0001
-0103 C901->OUT,01,001
-0104 0502->LDR,01,0002
-0105 C901->OUT,01,001
-0106 0503->LDR,01,0003
-0107 C901->OUT,01,001
-0108 0504->LDR,01,0004
-0109 C901->OUT,01,001
-010A 0505->LDR,01,0005
-010B C901->OUT,01,001
-010C 0506->LDR,01,0006
-010D C901->OUT,01,001
-010E 0507->LDR,01,0007
-010F C901->OUT,01,001
-0110 0508->LDR,01,0008
-0111 C901->OUT,01,001
-0112 0509->LDR,01,0009
-0113 C901->OUT,01,001
-0114 050A->LDR,01,000A
-0115 C901->OUT,01,001
-0116 050B->LDR,01,000B
-0117 C901->OUT,01,001
-0118 050C->LDR,01,000C
-0119 C901->OUT,01,001
-011A 050D->LDR,01,000D
-011B C901->OUT,01,001
-011C 050E->LDR,01,000E
-011D C901->OUT,01,001
-011E 050F->LDR,01,000F
-011F C901->OUT,01,001
-0120 0510->LDR,01,0010
-0121 C901->OUT,01,001
-0122 0511->LDR,01,0011
-0123 C901->OUT,01,001
-0124 0512->LDR,01,0012
-0125 C901->OUT,01,001
-0126 0513->LDR,01,0013
-0127 C901->OUT,01,001
-0128 0514->LDR,01,0014
-0129 C901->OUT,01,001
+0602 0501->LDR,01,0001
+0603 C901->OUT,01,001
+0604 0502->LDR,01,0002
+0605 C901->OUT,01,001
+0606 0503->LDR,01,0003
+0607 C901->OUT,01,001
+0608 0504->LDR,01,0004
+0609 C901->OUT,01,001
+060A 0505->LDR,01,0005
+060B C901->OUT,01,001
+060C 0506->LDR,01,0006
+060D C901->OUT,01,001
+060E 0507->LDR,01,0007
+060F C901->OUT,01,001
+0610 0508->LDR,01,0008
+0611 C901->OUT,01,001
+0612 0509->LDR,01,0009
+0613 C901->OUT,01,001
+0614 050A->LDR,01,000A
+0615 C901->OUT,01,001
+0616 050B->LDR,01,000B
+0617 C901->OUT,01,001
+0618 050C->LDR,01,000C
+0619 C901->OUT,01,001
+061A 050D->LDR,01,000D
+061B C901->OUT,01,001
+061C 050E->LDR,01,000E
+061D C901->OUT,01,001
+061E 050F->LDR,01,000F
+061F C901->OUT,01,001
+0620 0510->LDR,01,0010
+0621 C901->OUT,01,001
+0622 0511->LDR,01,0011
+0623 C901->OUT,01,001
+0624 0512->LDR,01,0012
+0625 C901->OUT,01,001
+0626 0513->LDR,01,0013
+0627 C901->OUT,01,001
+0628 0514->LDR,01,0014
+0629 C901->OUT,01,001
 
 
 Print value to be searched
-012A 0515->LDR,01,0015
-012B C901->OUT,01,001
+062A 0515->LDR,01,0015
+062B C901->OUT,01,001
 
 Print Answer
-012C 051F->LDR,01,001F
-012D C901->OUT,01,001
+062C 051F->LDR,01,001F
+062D C901->OUT,01,001
+
+Constants
+
+0016 FFFF-> Max value
+0017 1111->Stores closest Difference
+0018 1111->Temporary address to store current array index 
+0019 0600->Equal loop address
+001A 002F->Positive value address
+001B 0100->CLosest Diff address
+001C 0026->Main loop address
+001D 0102->Printing output loop address
+001E 1111
+001F 1111-> Address to store the answer

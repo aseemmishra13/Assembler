@@ -70,7 +70,7 @@ public class Simulator extends javax.swing.JFrame {
     String ixr1="0";//indirect register
     String ixr2="0";//indirect register
     String ixr3="0";//indirect register
-    
+    boolean asci=true;
     boolean pc1=true;
     boolean negative=false;//undeflow
     int cc=0;
@@ -216,6 +216,7 @@ public class Simulator extends javax.swing.JFrame {
         cache = new javax.swing.JTextArea();
         jPanel6 = new javax.swing.JPanel();
         jButton17 = new javax.swing.JButton();
+        jButton18 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 255, 255));
@@ -950,6 +951,13 @@ public class Simulator extends javax.swing.JFrame {
             }
         });
 
+        jButton18.setText("Load Program 2");
+        jButton18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton18ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -957,13 +965,17 @@ public class Simulator extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jButton17)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton18)
+                .addGap(49, 49, 49))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jButton17)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton17)
+                    .addComponent(jButton18))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
 
@@ -1981,6 +1993,38 @@ public void execute(String prc,String bin) {
  }
 public void OUT(String r,String address){
     //OUT opcode
+        if(asci){
+            int x = getRxyc(r);
+           
+            char character = (char) x;
+            
+             if("00001".equals(address)){
+     
+         if ("00".equals(r)){
+                     
+                       printer.append(String.valueOf(character)); //prints both hexa decimal and ineteger value
+                      
+                     }
+                     else if("01".equals(r)){
+                        
+                        printer.append(String.valueOf(character));//prints both hexa decimal and ineteger value
+                       
+                     }
+                      else if("10".equals(r)){
+                       
+                        printer.append(String.valueOf(character));//prints both hexa decimal and ineteger value
+                    
+                     }
+                      else if("11".equals(r)){
+                    
+                       printer.append(String.valueOf(character));//prints both hexa decimal and ineteger value
+                      
+                     }
+    }
+
+    
+    }
+    else{
     if("00001".equals(address)){
         int x = getRxyc(r);
          if ("00".equals(r)){
@@ -2005,7 +2049,45 @@ public void OUT(String r,String address){
                      }
     }
 }
+}
 public void IN(String r,String address){
+    if(asci){
+     String S =keyboard.getText();
+     if(S!= null && S.length()>0){
+            char c = S.charAt(0);
+            int asciiValue = (int) c;
+             if("00000".equals(address)){
+             setRxyc(r,DecimaltoHexa(asciiValue));
+//         if ("00".equals(r)){
+                     
+//                        GPR0.setText(DecimaltoHexa(asciiValue)); //set input to GPR0
+//                      
+//                     }
+//                     else if("01".equals(r)){
+//                        
+//                        GPR1.setText(DecimaltoHexa(asciiValue));//set input to GPR1
+//                       
+//                     }
+//                      else if("10".equals(r)){
+//                       
+//                        GPR2.setText(DecimaltoHexa(asciiValue));//set input to GPR2
+//                    
+//                     }
+//                      else if("11".equals(r)){
+//                    
+//                        GPR3.setText(DecimaltoHexa(asciiValue));//set input to GPR3
+//                      
+//                     }
+    }
+             
+             keyboard.setText(S.substring(1, S.length()));
+     }
+     else{
+         setRxyc(r,DecimaltoHexa(0));
+     }
+      
+    }
+    else{
     if("00000".equals(address)){
         String S = keyboard.getText(); //get input from keyboard
          if ("00".equals(r)){
@@ -2028,6 +2110,7 @@ public void IN(String r,String address){
                         GPR3.setText(S);//set input to GPR3
                       
                      }
+    }
     }
 }
 public void LDR(String opcode,String r, String ix,String i, String address,String add){
@@ -2713,8 +2796,8 @@ public void DVD(String opcode,String r, String ix,String i, String address,Strin
                          
                          }
                          if ("10".equals(r)){
-                              temp2 = Integer.parseInt(GPR0.getText(),16);
-                          temp3 = Integer.parseInt(GPR2.getText(),16);
+                              temp2 = Integer.parseInt(GPR2.getText(),16);
+                          temp3 = Integer.parseInt(GPR0.getText(),16);
                            if(temp3==0){
                               cc=3;
                               cc3=1; 
@@ -2959,8 +3042,14 @@ public void setRxyc( String r, String data){
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         // TODO add your handling code here:
         //load program1
-       // keyboard.setText("10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,101");
-     
+        keyboard.setText("10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,101");
+        asci=false;
+         if(asci){
+            console.append("True");
+        }
+        else{
+            console.append("False");
+        }
           String S= keyboard.getText();//take inut from keybaord
           
         int counter =1;
@@ -3029,6 +3118,85 @@ public void setRxyc( String r, String data){
       e.printStackTrace();
     }
     }//GEN-LAST:event_jButton17ActionPerformed
+
+    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
+        // TODO add your handling code here:
+        //load program2
+        keyboard.setText("consequences");
+        asci=true;
+        if(asci){
+            console.append("True \n");
+        }
+        else{
+            console.append("False \n");
+        }
+        
+        PC.setText("0050"); //set program counter to start of program
+         String [] tokens;
+     try{
+            
+        File myObj = new File("Program2.txt"); //opens file "IPL.txt"
+      Scanner myReader = new Scanner(myObj);
+        
+      while (myReader.hasNextLine()) {
+        String data = myReader.nextLine();
+         tokens = data.split(" ");
+         if(prog.size() == 2048){           // sets memory to 2048 words
+             JOptionPane.showMessageDialog(null,"Word memory reached");
+           
+       }else{
+         prog.put(tokens[0],tokens[1]);   //sets value and their address in memory
+         updateCache(tokens[0],tokens[1]);
+         displayCache();
+         }
+     
+      }
+   
+       System.out.println(prog);
+      myReader.close();
+    } catch (FileNotFoundException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+     
+     String [] tokens1;
+     int add=1000;
+     try{
+            
+        File myObj1 = new File("Sentence.txt"); //opens file "IPL.txt"
+      Scanner myReader1 = new Scanner(myObj1);
+        
+      while (myReader1.hasNextLine()) {
+        String data = myReader1.nextLine();
+         
+         if(prog.size() == 2048){           // sets memory to 2048 words
+             JOptionPane.showMessageDialog(null,"Word memory reached");
+           
+       }else{
+         for (int i = 0; i < data.length(); i++) {
+            char c = data.charAt(i);
+            int asciiValue = (int) c; // Convert the character to its ASCII value
+          
+            prog.put(DecimaltoHexa(add),DecimaltoHexa(asciiValue));   //sets value and their address in memory
+         updateCache(DecimaltoHexa(add),DecimaltoHexa(asciiValue));
+         displayCache();
+         add++;
+        }  
+         
+         prog.put(DecimaltoHexa(add),DecimaltoHexa(4));
+         updateCache(DecimaltoHexa(add),DecimaltoHexa(4));
+         displayCache();
+         }
+     
+      }
+   
+       System.out.println(prog);
+      myReader1.close();
+    } catch (FileNotFoundException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+    }//GEN-LAST:event_jButton18ActionPerformed
     
     String LastAdd(String addr){
         int count=0;
@@ -3108,6 +3276,7 @@ public void setRxyc( String r, String data){
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
+    private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
